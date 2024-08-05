@@ -83,7 +83,8 @@ public class FolderAnimationManager {
     public FolderAnimationManager(Folder folder, boolean isOpening) {
         mFolder = folder;
         mContent = folder.mContent;
-        mFolderBackground = (GradientDrawable) mFolder.getBackground();
+        //oh21 修改文件夹打开的背景
+//        mFolderBackground = (GradientDrawable) mFolder.getBackground();
 
         mFolderIcon = folder.mFolderIcon;
         mPreviewBackground = mFolderIcon.mBackground;
@@ -156,7 +157,8 @@ public class FolderAnimationManager {
         final int finalColor = Themes.getAttrColor(mContext, android.R.attr.colorPrimary);
         final int initialColor =
                 ColorUtils.setAlphaComponent(finalColor, mPreviewBackground.getBackgroundAlpha());
-        mFolderBackground.setColor(mIsOpening ? initialColor : finalColor);
+        //oh21 修改文件夹打开的背景
+//        mFolderBackground.setColor(mIsOpening ? initialColor : finalColor);
 
         // Set up the reveal animation that clips the Folder.
         int totalOffsetX = paddingOffsetX + previewItemOffsetX;
@@ -187,7 +189,8 @@ public class FolderAnimationManager {
         play(a, getAnimator(mFolder, View.TRANSLATION_X, xDistance, 0f));
         play(a, getAnimator(mFolder, View.TRANSLATION_Y, yDistance, 0f));
         play(a, getAnimator(mFolder, SCALE_PROPERTY, initialScale, finalScale));
-        play(a, getAnimator(mFolderBackground, "color", initialColor, finalColor));
+        //oh21 修改文件夹打开的背景
+//        play(a, getAnimator(mFolderBackground, "color", initialColor, finalColor));
         play(a, mFolderIcon.mFolderName.createTextAlphaAnimator(!mIsOpening));
         RoundedRectRevealOutlineProvider outlineProvider = new RoundedRectRevealOutlineProvider(
                 initialRadius, finalRadius, startRect, endRect) {

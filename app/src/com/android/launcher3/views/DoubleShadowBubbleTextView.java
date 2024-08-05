@@ -51,28 +51,30 @@ public class DoubleShadowBubbleTextView extends BubbleTextView {
     @Override
     public void onDraw(Canvas canvas) {
         // If text is transparent or shadow alpha is 0, don't draw any shadow
-        if (mShadowInfo.skipDoubleShadow(this)) {
-            super.onDraw(canvas);
-            return;
-        }
-        int alpha = Color.alpha(getCurrentTextColor());
-
-        // We enhance the shadow by drawing the shadow twice
-        getPaint().setShadowLayer(mShadowInfo.ambientShadowBlur, 0, 0,
-                ColorUtils.setAlphaComponent(mShadowInfo.ambientShadowColor, alpha));
-
-        drawWithoutBadge(canvas);
-        canvas.save();
-        canvas.clipRect(getScrollX(), getScrollY() + getExtendedPaddingTop(),
-                getScrollX() + getWidth(),
-                getScrollY() + getHeight());
-
-        getPaint().setShadowLayer(mShadowInfo.keyShadowBlur, 0.0f, mShadowInfo.keyShadowOffset,
-                ColorUtils.setAlphaComponent(mShadowInfo.keyShadowColor, alpha));
-        drawWithoutBadge(canvas);
-        canvas.restore();
-
-        drawBadgeIfNecessary(canvas);
+        super.onDraw(canvas);
+        //oh21 去掉快捷图标文字阴影
+//        if (mShadowInfo.skipDoubleShadow(this)) {
+//            super.onDraw(canvas);
+//            return;
+//        }
+//        int alpha = Color.alpha(getCurrentTextColor());
+//
+//        // We enhance the shadow by drawing the shadow twice
+//        getPaint().setShadowLayer(mShadowInfo.ambientShadowBlur, 0, 0,
+//                ColorUtils.setAlphaComponent(mShadowInfo.ambientShadowColor, alpha));
+//
+//        drawWithoutBadge(canvas);
+//        canvas.save();
+//        canvas.clipRect(getScrollX(), getScrollY() + getExtendedPaddingTop(),
+//                getScrollX() + getWidth(),
+//                getScrollY() + getHeight());
+//
+//        getPaint().setShadowLayer(mShadowInfo.keyShadowBlur, 0.0f, mShadowInfo.keyShadowOffset,
+//                ColorUtils.setAlphaComponent(mShadowInfo.keyShadowColor, alpha));
+//        drawWithoutBadge(canvas);
+//        canvas.restore();
+//
+//        drawBadgeIfNecessary(canvas);
     }
 
     public static class ShadowInfo {

@@ -28,6 +28,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RadialGradient;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.support.v4.graphics.ColorUtils;
@@ -131,7 +132,9 @@ public class PreviewBackground {
     public void setup(Launcher launcher, View invalidateDelegate,
                       int availableSpaceX, int topPadding) {
         mInvalidateDelegate = invalidateDelegate;
-        mBgColor = Themes.getAttrColor(launcher, android.R.attr.colorPrimary);
+        //oh21 修改previewBackground背景颜色
+        mBgColor = Color.parseColor("#b3ffffff");
+//        mBgColor = Themes.getAttrColor(launcher, android.R.attr.colorPrimary);
 
         DeviceProfile grid = launcher.getDeviceProfile();
         previewSize = grid.folderIconSizePx;
@@ -142,13 +145,14 @@ public class PreviewBackground {
         // Stroke width is 1dp
         mStrokeWidth = launcher.getResources().getDisplayMetrics().density;
 
-        float radius = getScaledRadius();
-        float shadowRadius = radius + mStrokeWidth;
-        int shadowColor = Color.argb(SHADOW_OPACITY, 0, 0, 0);
-        mShadowShader = new RadialGradient(0, 0, 1,
-                new int[] {shadowColor, Color.TRANSPARENT},
-                new float[] {radius / shadowRadius, 1},
-                Shader.TileMode.CLAMP);
+        //oh21 修改去掉阴影
+//        float radius = getScaledRadius();
+//        float shadowRadius = radius + mStrokeWidth;
+//        int shadowColor = Color.argb(SHADOW_OPACITY, 0, 0, 0);
+//        mShadowShader = new RadialGradient(0, 0, 1,
+//                new int[] {shadowColor, Color.TRANSPARENT},
+//                new float[] {radius / shadowRadius, 1},
+//                Shader.TileMode.CLAMP);
 
         invalidate();
     }
@@ -193,8 +197,10 @@ public class PreviewBackground {
     }
 
     public int getBgColor() {
-        int alpha = (int) Math.min(MAX_BG_OPACITY, BG_OPACITY * mColorMultiplier);
-        return ColorUtils.setAlphaComponent(mBgColor, alpha);
+        //oh21修改 合并创建文件夹时的白色背景
+//        int alpha = (int) Math.min(MAX_BG_OPACITY, BG_OPACITY * mColorMultiplier);
+//        return ColorUtils.setAlphaComponent(mBgColor, alpha);
+        return mBgColor;
     }
 
     public int getBadgeColor() {
@@ -281,10 +287,11 @@ public class PreviewBackground {
     }
 
     public void drawBackgroundStroke(Canvas canvas) {
-        mPaint.setColor(ColorUtils.setAlphaComponent(mBgColor, mStrokeAlpha));
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(mStrokeWidth);
-        drawCircle(canvas, 1 /* deltaRadius */);
+        //oh21 去掉文件夹图标默认的圆形背景，包括拖拽时候的圆形背景
+//        mPaint.setColor(ColorUtils.setAlphaComponent(mBgColor, mStrokeAlpha));
+//        mPaint.setStyle(Paint.Style.STROKE);
+//        mPaint.setStrokeWidth(mStrokeWidth);
+//        drawCircle(canvas, 1 /* deltaRadius */);
     }
 
     public void drawLeaveBehind(Canvas canvas) {
@@ -299,15 +306,21 @@ public class PreviewBackground {
     }
 
     private void drawCircle(Canvas canvas,float deltaRadius) {
-        float radius = getScaledRadius();
-        canvas.drawCircle(radius + getOffsetX(), radius + getOffsetY(),
-                radius - deltaRadius, mPaint);
+        //oh21 修改文件夹默认的背景为矩形
+//        float radius = getScaledRadius();
+//        canvas.drawCircle(radius + getOffsetX(), radius + getOffsetY(),
+//                radius - deltaRadius, mPaint);
+        canvas.drawRoundRect(getOffsetX(), getOffsetY(),
+                getOffsetX() + previewSize, getOffsetY() + previewSize, 40f, 40f, mPaint);
     }
 
     public Path getClipPath() {
         mPath.reset();
-        float r = getScaledRadius();
-        mPath.addCircle(r + getOffsetX(), r + getOffsetY(), r, Path.Direction.CW);
+        //oh21 修改文件夹默认的背景为矩形
+//        float r = getScaledRadius();
+//        mPath.addCircle(r + getOffsetX(), r + getOffsetY(), r, Path.Direction.CW);
+        mPath.addRoundRect(getOffsetX(), getOffsetY(),
+                getOffsetX() + previewSize, getOffsetY() + previewSize, new float[] {40f,40f,40f,40f,40f,40f,40f,40f},Path.Direction.CW);
         return mPath;
     }
 

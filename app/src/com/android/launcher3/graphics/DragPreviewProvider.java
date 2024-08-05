@@ -26,6 +26,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import com.android.launcher3.BubbleTextView;
@@ -134,7 +135,6 @@ public class DragPreviewProvider {
             return BitmapRenderer.createSoftwareBitmap(width + blurSizeOutline,
                     height + blurSizeOutline, (c) -> drawDragView(c, scale));
         }
-
         return BitmapRenderer.createHardwareBitmap(width + blurSizeOutline,
                 height + blurSizeOutline, (c) -> drawDragView(c, 1));
     }
@@ -151,8 +151,21 @@ public class DragPreviewProvider {
     protected static Rect getDrawableBounds(Drawable d) {
         Rect bounds = new Rect();
         d.copyBounds(bounds);
+        Log.d("DragPreviewProvider", "getDrawableBounds: " + bounds);
         if (bounds.width() == 0 || bounds.height() == 0) {
             bounds.set(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+        } else {
+            bounds.offsetTo(0, 0);
+        }
+        return bounds;
+    }
+
+    protected static Rect getDrawableBounds(BubbleTextView view) {
+        Rect bounds = new Rect();
+        view.getLocalVisibleRect(bounds);
+        Log.d("DragPreviewProvider", "getDrawableBounds222: " + bounds);
+        if (bounds.width() == 0 || bounds.height() == 0) {
+            bounds.set(0, 0, view.getWidth(), view.getHeight());
         } else {
             bounds.offsetTo(0, 0);
         }

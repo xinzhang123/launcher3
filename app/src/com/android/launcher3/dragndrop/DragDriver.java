@@ -17,6 +17,7 @@
 package com.android.launcher3.dragndrop;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import com.android.launcher3.DropTarget.DragObject;
@@ -84,8 +85,10 @@ public abstract class DragDriver {
     public static DragDriver create(Context context, DragController dragController,
             DragObject dragObject, DragOptions options) {
         if (Utilities.ATLEAST_NOUGAT && options.systemDndStartPoint != null) {
+            Log.d("DragDriver", "create: SystemDragDriver");
             return new SystemDragDriver(dragController, context, dragObject);
         } else {
+            Log.d("DragDriver", "create: InternalDragDriver");
             return new InternalDragDriver(dragController);
         }
     }

@@ -147,7 +147,7 @@
         launcher:name="Nexus 10"
         launcher:minWidthDps="727"
         launcher:minHeightDps="1207"
-        launcher:numRows="5"
+        launcher:numRows="4"
         launcher:numColumns="6"
         launcher:numFolderRows="4"
         launcher:numFolderColumns="5"

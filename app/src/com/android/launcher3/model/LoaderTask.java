@@ -870,6 +870,7 @@ public class LoaderTask implements Runnable {
      * 加载所有应用
      */
     private void getAllApplications() {
+        Log.d(TAG, "getAllApplications: ");
         final Context context = mApp.getContext();
         ArrayList<Pair<ItemInfo, Object>> installQueue = new ArrayList<>();
         final List<UserHandle> profiles = mUserManager.getUserProfiles();

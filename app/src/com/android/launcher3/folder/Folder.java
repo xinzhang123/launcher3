@@ -515,7 +515,8 @@ public class Folder extends AbstractFloatingView implements DragSource,
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                mFolderIcon.setBackgroundVisible(false);
+                //oh21 修改打开文件不消失folderIcon
+//                mFolderIcon.setBackgroundVisible(false);
                 mFolderIcon.drawLeaveBehindIfExists();
             }
             @Override
@@ -640,9 +641,10 @@ public class Folder extends AbstractFloatingView implements DragSource,
         mDragController.removeDropTarget(this);
         clearFocus();
         if (mFolderIcon != null) {
-            mFolderIcon.setVisibility(View.VISIBLE);
-            mFolderIcon.setBackgroundVisible(true);
-            mFolderIcon.mFolderName.setTextVisibility(true);
+            //oh21 修改打开文件不消失folderIcon
+//            mFolderIcon.setVisibility(View.VISIBLE);
+//            mFolderIcon.setBackgroundVisible(true);
+//            mFolderIcon.mFolderName.setTextVisibility(true);
             if (wasAnimated) {
                 mFolderIcon.mBackground.fadeInBackgroundShadow();
                 mFolderIcon.mBackground.animateBackgroundStroke();
@@ -792,6 +794,7 @@ public class Folder extends AbstractFloatingView implements DragSource,
     public void onDragExit(DragObject d) {
         // We only close the folder if this is a true drag exit, ie. not because
         // a drop has occurred above the folder.
+        Log.d("123", "Folder onDragExit: ");
         if (!d.dragComplete) {
             mOnExitAlarm.setOnAlarmListener(mOnExitAlarmListener);
             mOnExitAlarm.setAlarm(ON_EXIT_CLOSE_DELAY);
@@ -1212,7 +1215,7 @@ public class Folder extends AbstractFloatingView implements DragSource,
             mInfo.setOption(FolderInfo.FLAG_MULTI_PAGE_ANIMATION, true, mLauncher.getModelWriter());
         }
 
-        mLauncher.getStateManager().goToState(NORMAL, SPRING_LOADED_EXIT_DELAY);
+        mLauncher.getStateManager().goToState(NORMAL, 0); //oh21 workspace修改从workspace拖拽view到folder中延迟执行的normal动画
         if (d.stateAnnouncer != null) {
             d.stateAnnouncer.completeAction(R.string.item_moved);
         }

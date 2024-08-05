@@ -28,6 +28,7 @@ import static com.android.launcher3.anim.PropertySetter.NO_ANIM_PROPERTY_SETTER;
 import static com.android.launcher3.graphics.WorkspaceAndHotseatScrim.SCRIM_PROGRESS;
 import static com.android.launcher3.graphics.WorkspaceAndHotseatScrim.SYSUI_PROGRESS;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 
@@ -59,6 +60,7 @@ public class WorkspaceStateTransitionAnimation {
 
     public void setStateWithAnimation(LauncherState toState, AnimatorSetBuilder builder,
             AnimationConfig config) {
+        //oh21 去掉拖拽缩放动画
         setWorkspaceProperty(toState, config.getPropertySetter(builder), builder, config);
     }
 
@@ -72,26 +74,27 @@ public class WorkspaceStateTransitionAnimation {
     private void setWorkspaceProperty(LauncherState state, PropertySetter propertySetter,
             AnimatorSetBuilder builder, AnimationConfig config) {
         float[] scaleAndTranslation = state.getWorkspaceScaleAndTranslation(mLauncher);
+        Log.d("LauncherState", "setWorkspaceProperty: " + scaleAndTranslation);
         mNewScale = scaleAndTranslation[0];
-        PageAlphaProvider pageAlphaProvider = state.getWorkspacePageAlphaProvider(mLauncher);
-        final int childCount = mWorkspace.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            applyChildState(state, (CellLayout) mWorkspace.getChildAt(i), i, pageAlphaProvider,
-                    propertySetter, builder, config);
-        }
+//        PageAlphaProvider pageAlphaProvider = state.getWorkspacePageAlphaProvider(mLauncher);
+//        final int childCount = mWorkspace.getChildCount();
+//        for (int i = 0; i < childCount; i++) {
+//            applyChildState(state, (CellLayout) mWorkspace.getChildAt(i), i, pageAlphaProvider,
+//                    propertySetter, builder, config);
+//        }
 
-        int elements = state.getVisibleElements(mLauncher);
-        Interpolator fadeInterpolator = builder.getInterpolator(ANIM_WORKSPACE_FADE,
-                pageAlphaProvider.interpolator);
+//        int elements = state.getVisibleElements(mLauncher);
+//        Interpolator fadeInterpolator = builder.getInterpolator(ANIM_WORKSPACE_FADE,
+//                pageAlphaProvider.interpolator);
         boolean playAtomicComponent = config.playAtomicComponent();
         if (playAtomicComponent) {
             Interpolator scaleInterpolator = builder.getInterpolator(ANIM_WORKSPACE_SCALE, ZOOM_OUT);
             propertySetter.setFloat(mWorkspace, SCALE_PROPERTY, mNewScale, scaleInterpolator);
-            float hotseatIconsAlpha = (elements & HOTSEAT_ICONS) != 0 ? 1 : 0;
-            propertySetter.setViewAlpha(mLauncher.getHotseat().getLayout(), hotseatIconsAlpha,
-                    fadeInterpolator);
-            propertySetter.setViewAlpha(mLauncher.getWorkspace().getPageIndicator(),
-                    hotseatIconsAlpha, fadeInterpolator);
+//            float hotseatIconsAlpha = (elements & HOTSEAT_ICONS) != 0 ? 1 : 0;
+//            propertySetter.setViewAlpha(mLauncher.getHotseat().getLayout(), hotseatIconsAlpha,
+//                    fadeInterpolator);
+//            propertySetter.setViewAlpha(mLauncher.getWorkspace().getPageIndicator(),
+//                    hotseatIconsAlpha, fadeInterpolator);
         }
 
         if (!config.playNonAtomicComponent()) {
@@ -105,17 +108,18 @@ public class WorkspaceStateTransitionAnimation {
         propertySetter.setFloat(mWorkspace, View.TRANSLATION_Y,
                 scaleAndTranslation[2], translationInterpolator);
 
-        propertySetter.setViewAlpha(mLauncher.getHotseatSearchBox(),
-                (elements & HOTSEAT_SEARCH_BOX) != 0 ? 1 : 0, fadeInterpolator);
-
-        // Set scrim
-        WorkspaceAndHotseatScrim scrim = mLauncher.getDragLayer().getScrim();
-        propertySetter.setFloat(scrim, SCRIM_PROGRESS, state.getWorkspaceScrimAlpha(mLauncher),
-                LINEAR);
-        propertySetter.setFloat(scrim, SYSUI_PROGRESS, state.hasSysUiScrim ? 1 : 0, LINEAR);
+//        propertySetter.setViewAlpha(mLauncher.getHotseatSearchBox(),
+//                (elements & HOTSEAT_SEARCH_BOX) != 0 ? 1 : 0, fadeInterpolator);
+//
+//        // Set scrim
+//        WorkspaceAndHotseatScrim scrim = mLauncher.getDragLayer().getScrim();
+//        propertySetter.setFloat(scrim, SCRIM_PROGRESS, state.getWorkspaceScrimAlpha(mLauncher),
+//                LINEAR);
+//        propertySetter.setFloat(scrim, SYSUI_PROGRESS, state.hasSysUiScrim ? 1 : 0, LINEAR);
     }
 
     public void applyChildState(LauncherState state, CellLayout cl, int childIndex) {
+        Log.d("LauncherState", "applyChildState: " + state);
         applyChildState(state, cl, childIndex, state.getWorkspacePageAlphaProvider(mLauncher),
                 NO_ANIM_PROPERTY_SETTER, new AnimatorSetBuilder(), new AnimationConfig());
     }
@@ -124,6 +128,7 @@ public class WorkspaceStateTransitionAnimation {
             PageAlphaProvider pageAlphaProvider, PropertySetter propertySetter,
             AnimatorSetBuilder builder, AnimationConfig config) {
         float pageAlpha = pageAlphaProvider.getPageAlpha(childIndex);
+        Log.d("LauncherState", "applyChildState: " + pageAlpha);
         int drawableAlpha = Math.round(pageAlpha * (state.hasWorkspacePageBackground ? 255 : 0));
 
         if (config.playNonAtomicComponent()) {

@@ -30,6 +30,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.ColorUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -172,6 +173,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         setEllipsize(TruncateAt.END);
         setAccessibilityDelegate(mActivity.getAccessibilityDelegate());
         setTextAlpha(1f);
+        setBackgroundColor(Color.parseColor("#FFF0592B")); //oh21 快捷方式的背景颜色
     }
 
     @Override
@@ -293,6 +295,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                getIconBounds(mTempIconBounds);
+                Log.d("BubbleTextView", "onTouchEvent: mTempIconBounds === " + mTempIconBounds + " event.getX() === " + event.getX() + " event.getY() === " + event.getY());
+                Log.d("BubbleTextView", "onTouchEvent: isContains === " + mTempIconBounds.contains((int) event.getX(), (int) event.getY()));
                 // If we're in a stylus button press, don't check for long press.
                 if (!mStylusEventHelper.inStylusButtonPressed()) {
                     mLongPressHelper.postCheckForLongPress();
@@ -357,6 +362,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
      */
     protected void drawBadgeIfNecessary(Canvas canvas) {
         if (!mForceHideBadge && (hasBadge() || mBadgeScale > 0)) {
+            Log.d("BubbleTextview", "drawBadgeIfNecessary: success");
             getIconBounds(mTempIconBounds);
             mTempSpaceForBadgeOffset.set((getWidth() - mIconSize) / 2, getPaddingTop());
             final int scrollX = getScrollX();

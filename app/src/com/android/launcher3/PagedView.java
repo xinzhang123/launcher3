@@ -291,6 +291,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
      * Sets the current page.
      */
     public void setCurrentPage(int currentPage) {
+        Log.d(TAG, "setCurrentPage: " + currentPage);
         if (!mScroller.isFinished()) {
             abortScrollerAnimation(true);
         }

@@ -256,7 +256,7 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
     private CellLayout createAndAddNewPage() {
         DeviceProfile grid = Launcher.getLauncher(getContext()).getDeviceProfile();
         CellLayout page = (CellLayout) mInflater.inflate(R.layout.folder_page, this, false);
-        page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
+        page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);//oh21 文件夹设置这个方法就会让celllayout的大小变成文件夹的大小
         page.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         page.setInvertIfRtl(true);
         page.setGridSize(mGridCountX, mGridCountY);

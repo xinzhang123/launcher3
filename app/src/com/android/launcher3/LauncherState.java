@@ -23,6 +23,7 @@ import static com.android.launcher3.anim.Interpolators.ACCEL_2;
 import static com.android.launcher3.states.RotationHelper.REQUEST_NONE;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.animation.Interpolator;
 
 import com.android.launcher3.states.SpringLoadedState;
@@ -221,6 +222,7 @@ public class LauncherState {
     }
 
     public PageAlphaProvider getWorkspacePageAlphaProvider(Launcher launcher) {
+        Log.d("LauncherState", "getWorkspacePageAlphaProvider: " + this);
         if (this != NORMAL || !launcher.getDeviceProfile().shouldFadeAdjacentWorkspaceScreens()) {
             return DEFAULT_ALPHA_PROVIDER;
         }

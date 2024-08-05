@@ -22,6 +22,7 @@ import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.LauncherState.OVERVIEW;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 
@@ -48,6 +49,7 @@ public class ItemLongClickListener {
             ItemLongClickListener::onAllAppsItemLongClick;
 
     private static boolean onWorkspaceItemLongClick(View v) {
+        Log.d("123", "onWorkspaceItemLongClick: ");
         Launcher launcher = Launcher.getLauncher(v.getContext());
         if (!canStartDrag(launcher)) return false;
         if (!launcher.isInState(NORMAL) && !launcher.isInState(OVERVIEW)) return false;

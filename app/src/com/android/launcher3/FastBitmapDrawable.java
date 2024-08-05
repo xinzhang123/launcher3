@@ -20,6 +20,7 @@ import static com.android.launcher3.anim.Interpolators.ACCEL;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -30,7 +31,10 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.Property;
 import android.util.SparseArray;
 
@@ -122,6 +126,15 @@ public class FastBitmapDrawable extends Drawable {
 
     protected void drawInternal(Canvas canvas, Rect bounds) {
         canvas.drawBitmap(mBitmap, null, bounds, mPaint);
+        // 初始化绘制纹理图
+//        BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+//        Paint paint = new Paint();
+//        paint.setAntiAlias(true);
+//        paint.setDither(true);
+//        paint.setShader(bitmapShader);
+//        paint.setStrokeWidth(16);
+//        int mWidth = Math.min(mBitmap.getWidth(), mBitmap.getHeight());
+//        canvas.drawRoundRect(new RectF(8, 8, mWidth-8, mWidth-8), 40, 40, paint);
     }
 
     @Override
@@ -202,11 +215,12 @@ public class FastBitmapDrawable extends Drawable {
             }
 
             if (mIsPressed) {
+                //oh21 按下图标时去除放大动画
                 // Animate when going to pressed state
-                mScaleAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SCALE);
-                mScaleAnimation.setDuration(CLICK_FEEDBACK_DURATION);
-                mScaleAnimation.setInterpolator(ACCEL);
-                mScaleAnimation.start();
+//                mScaleAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SCALE);
+//                mScaleAnimation.setDuration(CLICK_FEEDBACK_DURATION);
+//                mScaleAnimation.setInterpolator(ACCEL);
+//                mScaleAnimation.start();
             } else {
                 mScale = 1f;
                 invalidateSelf();

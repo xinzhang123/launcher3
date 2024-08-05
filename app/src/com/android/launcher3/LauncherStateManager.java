@@ -35,6 +35,7 @@ import android.animation.AnimatorSet;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.IntDef;
+import android.util.Log;
 
 import com.android.launcher3.anim.AnimationSuccessListener;
 import com.android.launcher3.anim.AnimatorPlaybackController;
@@ -49,44 +50,44 @@ import java.util.ArrayList;
 
 /**
  * TODO: figure out what kind of tests we can write for this
- *
+ * <p>
  * Things to test when changing the following class.
- *   - Home from workspace
- *          - from center screen
- *          - from other screens
- *   - Home from all apps
- *          - from center screen
- *          - from other screens
- *   - Back from all apps
- *          - from center screen
- *          - from other screens
- *   - Launch app from workspace and quit
- *          - with back
- *          - with home
- *   - Launch app from all apps and quit
- *          - with back
- *          - with home
- *   - Go to a screen that's not the default, then all
- *     apps, and launch and app, and go back
- *          - with back
- *          -with home
- *   - On workspace, long press power and go back
- *          - with back
- *          - with home
- *   - On all apps, long press power and go back
- *          - with back
- *          - with home
- *   - On workspace, power off
- *   - On all apps, power off
- *   - Launch an app and turn off the screen while in that app
- *          - Go back with home key
- *          - Go back with back key  TODO: make this not go to workspace
- *          - From all apps
- *          - From workspace
- *   - Enter and exit car mode (becase it causes an extra configuration changed)
- *          - From all apps
- *          - From the center workspace
- *          - From another workspace
+ * - Home from workspace
+ * - from center screen
+ * - from other screens
+ * - Home from all apps
+ * - from center screen
+ * - from other screens
+ * - Back from all apps
+ * - from center screen
+ * - from other screens
+ * - Launch app from workspace and quit
+ * - with back
+ * - with home
+ * - Launch app from all apps and quit
+ * - with back
+ * - with home
+ * - Go to a screen that's not the default, then all
+ * apps, and launch and app, and go back
+ * - with back
+ * -with home
+ * - On workspace, long press power and go back
+ * - with back
+ * - with home
+ * - On all apps, long press power and go back
+ * - with back
+ * - with home
+ * - On workspace, power off
+ * - On all apps, power off
+ * - Launch an app and turn off the screen while in that app
+ * - Go back with home key
+ * - Go back with back key  TODO: make this not go to workspace
+ * - From all apps
+ * - From workspace
+ * - Enter and exit car mode (becase it causes an extra configuration changed)
+ * - From all apps
+ * - From the center workspace
+ * - From another workspace
  */
 public class LauncherStateManager {
 
@@ -101,7 +102,9 @@ public class LauncherStateManager {
             ATOMIC_COMPONENT
     })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface AnimationComponents {}
+    public @interface AnimationComponents {
+    }
+
     public static final int NON_ATOMIC_COMPONENT = 1 << 0;
     public static final int ATOMIC_COMPONENT = 1 << 1;
 
@@ -162,7 +165,7 @@ public class LauncherStateManager {
      * Changes the Launcher state to the provided state.
      *
      * @param animated false if the state should change immediately without any animation,
-     *                true otherwise
+     *                 true otherwise
      * @paras onCompleteRunnable any action to perform at the end of the transition, of null.
      */
     public void goToState(LauncherState state, boolean animated, Runnable onCompleteRunnable) {
@@ -199,7 +202,7 @@ public class LauncherStateManager {
     }
 
     private void goToState(LauncherState state, boolean animated, long delay,
-            final Runnable onCompleteRunnable) {
+                           final Runnable onCompleteRunnable) {
         if (mLauncher.isInState(state)) {
             if (mConfig.mCurrentAnimation == null) {
                 // Run any queued runnable
@@ -225,6 +228,7 @@ public class LauncherStateManager {
         LauncherState fromState = mState;
         mConfig.reset();
 
+        Log.d("123", "goToState: animated === " + animated + " fromState === " + fromState + " state === " + state);
         if (!animated) {
             onStateTransitionStart(state);
             for (StateHandler handler : getStateHandlers()) {
@@ -265,8 +269,9 @@ public class LauncherStateManager {
      * - Setting some start values (e.g. scale) for views that are hidden but about to be shown.
      */
     public void prepareForAtomicAnimation(LauncherState fromState, LauncherState toState,
-            AnimatorSetBuilder builder) {
+                                          AnimatorSetBuilder builder) {
         if (fromState == NORMAL && toState.overviewUi) {
+            Log.d("123", "prepareForAtomicAnimation: fromState == NORMAL && toState.overviewUi");
             builder.setInterpolator(ANIM_WORKSPACE_SCALE, OVERSHOOT_1_2);
             builder.setInterpolator(ANIM_WORKSPACE_FADE, OVERSHOOT_1_2);
             builder.setInterpolator(ANIM_OVERVIEW_SCALE, OVERSHOOT_1_2);
@@ -275,6 +280,7 @@ public class LauncherStateManager {
             // Start from a higher overview scale, but only if we're invisible so we don't jump.
             UiFactory.prepareToShowOverview(mLauncher);
         } else if (fromState.overviewUi && toState == NORMAL) {
+            Log.d("123", "prepareForAtomicAnimation: fromState.overviewUi && toState == NORMAL");
             builder.setInterpolator(ANIM_WORKSPACE_SCALE, DEACCEL);
             builder.setInterpolator(ANIM_WORKSPACE_FADE, ACCEL);
             builder.setInterpolator(ANIM_OVERVIEW_SCALE, clampToProgress(ACCEL, 0, 0.9f));
@@ -299,9 +305,10 @@ public class LauncherStateManager {
     /**
      * Creates a {@link AnimatorPlaybackController} that can be used for a controlled
      * state transition.
-     * @param state the final state for the transition.
+     *
+     * @param state    the final state for the transition.
      * @param duration intended duration for normal playback. Use higher duration for better
-     *                accuracy.
+     *                 accuracy.
      */
     public AnimatorPlaybackController createAnimationToNewWorkspace(
             LauncherState state, long duration) {
@@ -315,8 +322,8 @@ public class LauncherStateManager {
     }
 
     public AnimatorPlaybackController createAnimationToNewWorkspace(LauncherState state,
-            AnimatorSetBuilder builder, long duration, Runnable onCancelRunnable,
-            @AnimationComponents int animComponents) {
+                                                                    AnimatorSetBuilder builder, long duration, Runnable onCancelRunnable,
+                                                                    @AnimationComponents int animComponents) {
         mConfig.reset();
         mConfig.userControlled = true;
         mConfig.animComponents = animComponents;
@@ -328,7 +335,7 @@ public class LauncherStateManager {
     }
 
     protected AnimatorSet createAnimationToNewWorkspaceInternal(final LauncherState state,
-            AnimatorSetBuilder builder, final Runnable onCompleteRunnable) {
+                                                                AnimatorSetBuilder builder, final Runnable onCompleteRunnable) {
 
         for (StateHandler handler : getStateHandlers()) {
             builder.startTag(handler);
@@ -341,6 +348,7 @@ public class LauncherStateManager {
             @Override
             public void onAnimationStart(Animator animation) {
                 // Change the internal state only when the transition actually starts
+                Log.d("123", "createAnimationToNewWorkspaceInternal onAnimationStart: ");
                 onStateTransitionStart(state);
                 for (int i = mListeners.size() - 1; i >= 0; i--) {
                     mListeners.get(i).onStateTransitionStart(state);
@@ -569,7 +577,7 @@ public class LauncherStateManager {
          * Sets the UI to {@param state} by animating any changes.
          */
         void setStateWithAnimation(LauncherState toState,
-                AnimatorSetBuilder builder, AnimationConfig config);
+                                   AnimatorSetBuilder builder, AnimationConfig config);
     }
 
     public interface StateListener {
@@ -580,6 +588,7 @@ public class LauncherStateManager {
         void onStateSetImmediately(LauncherState state);
 
         void onStateTransitionStart(LauncherState toState);
+
         void onStateTransitionComplete(LauncherState finalState);
     }
 }

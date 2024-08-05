@@ -1033,6 +1033,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
      */
     private void completeAddShortcut(Intent data, long container, long screenId, int cellX,
                                      int cellY, PendingRequestArgs args) {
+        Log.d(TAG, "completeAddShortcut: ");
         if (args.getRequestCode() != REQUEST_CREATE_SHORTCUT
                 || args.getPendingIntent().getComponent() == null) {
             return;
@@ -1073,6 +1074,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
                 cellXY[1] = cellY;
                 foundCellSpan = true;
 
+                Log.d(TAG, "completeAddShortcut: createUserFolderIfNecessary === ");
                 // If appropriate, either create a folder or add to an existing folder
                 if (mWorkspace.createUserFolderIfNecessary(view, container, layout, cellXY, 0,
                         true, null)) {
@@ -1866,6 +1868,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     private void bindAddScreens(ArrayList<Long> orderedScreenIds) {
         int count = orderedScreenIds.size();
+        Log.d(TAG, "bindAddScreens: " + orderedScreenIds);
         for (int i = 0; i < count; i++) {
             long screenId = orderedScreenIds.get(i);
             if (!FeatureFlags.QSB_ON_FIRST_SCREEN || screenId != Workspace.FIRST_SCREEN_ID) {

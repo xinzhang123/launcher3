@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.util.Log;
 import android.view.View;
 
 import com.android.launcher3.util.Thunk;
@@ -36,8 +37,10 @@ public class CheckLongPressHelper {
                     && !mHasPerformedLongPress) {
                 boolean handled;
                 if (mListener != null) {
+                    Log.d("BubbleTextView", "run: onLongClick");
                     handled = mListener.onLongClick(mView);
                 } else {
+                    Log.d("BubbleTextView", "run: performLongClick");
                     handled = mView.performLongClick();
                 }
                 if (handled) {

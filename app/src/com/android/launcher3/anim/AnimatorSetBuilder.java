@@ -17,6 +17,7 @@ package com.android.launcher3.anim;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.animation.Interpolator;
 
@@ -56,6 +57,7 @@ public class AnimatorSetBuilder {
 
     public AnimatorSet build() {
         AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
+//        Log.d("123", "build: mAnims=== " + mAnims);
         anim.playTogether(mAnims);
         if (!mOnFinishRunnables.isEmpty()) {
             anim.addListener(new AnimationSuccessListener() {

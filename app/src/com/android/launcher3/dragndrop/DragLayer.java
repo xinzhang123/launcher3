@@ -355,6 +355,7 @@ public class DragLayer extends BaseDragLayer<Launcher> {
      *        anchored to in case scrolling is currently taking place. Note: currently this is
      *        only used for the X dimension for the case of the workspace.
      */
+    //oh21 dragview释放时的动画效果
     public void animateView(final DragView view, final Rect from, final Rect to,
             final float finalAlpha, final float initScaleX, final float initScaleY,
             final float finalScaleX, final float finalScaleY, int duration,

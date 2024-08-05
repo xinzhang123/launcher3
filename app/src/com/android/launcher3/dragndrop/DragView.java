@@ -42,6 +42,7 @@ import android.os.Looper;
 import android.support.animation.FloatPropertyCompat;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
+import android.util.Log;
 import android.view.View;
 
 import com.android.launcher3.FastBitmapDrawable;
@@ -560,13 +561,15 @@ public class DragView extends View {
         DragLayer.LayoutParams lp = new DragLayer.LayoutParams(0, 0);
         lp.width = mBitmap.getWidth();
         lp.height = mBitmap.getHeight();
+        Log.d("Launcher.Workspace", "show: lp.width " + lp.width + " lp.height " +lp.height);
         lp.customPosition = true;
         setLayoutParams(lp);
         move(touchX, touchY);
         // Post the animation to skip other expensive work happening on the first frame
         post(new Runnable() {
             public void run() {
-                mAnim.start();
+                //oh21 去除图标长按后的放大效果
+//                mAnim.start();
             }
         });
     }

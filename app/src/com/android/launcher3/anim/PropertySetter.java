@@ -19,6 +19,7 @@ package com.android.launcher3.anim;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.util.Log;
 import android.util.Property;
 import android.view.View;
 
@@ -54,6 +55,7 @@ public class PropertySetter {
         public AnimatedPropertySetter(long duration, AnimatorSetBuilder builder) {
             mDuration = duration;
             mStateAnimator = builder;
+            Log.d("123", "AnimatedPropertySetter: ");
         }
 
         @Override

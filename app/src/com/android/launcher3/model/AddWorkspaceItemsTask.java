@@ -18,6 +18,7 @@ package com.android.launcher3.model;
 import android.content.Context;
 import android.content.Intent;
 import android.os.UserHandle;
+import android.util.Log;
 import android.util.LongSparseArray;
 import android.util.Pair;
 import com.android.launcher3.AllAppsList;
@@ -117,8 +118,9 @@ public class AddWorkspaceItemsTask extends BaseModelUpdateTask {
 
         // Update the workspace screens
         updateScreens(context, workspaceScreens);
-
+        Log.d("AddWorkspaceItemsTask", "Update the workspace screens");
         if (!addedItemsFinal.isEmpty()) {
+            Log.d("AddWorkspaceItemsTask", "execute: " + addedItemsFinal);
             scheduleCallbackTask(new CallbackTask() {
                 @Override
                 public void execute(Callbacks callbacks) {

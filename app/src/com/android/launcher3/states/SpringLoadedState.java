@@ -19,6 +19,7 @@ import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_TRANSITION_M
 import static com.android.launcher3.states.RotationHelper.REQUEST_LOCK;
 
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.InstallShortcutReceiver;
@@ -53,6 +54,7 @@ public class SpringLoadedState extends LauncherState {
             return new float[] {scale, 0, 0};
         }
 
+        Log.d("123", "getWorkspaceScaleAndTranslation: grid.workspaceSpringLoadShrinkFactor === " + grid.workspaceSpringLoadShrinkFactor);
         float scale = grid.workspaceSpringLoadShrinkFactor;
         Rect insets = launcher.getDragLayer().getInsets();
 

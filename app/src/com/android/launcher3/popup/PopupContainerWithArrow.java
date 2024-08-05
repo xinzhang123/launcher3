@@ -34,6 +34,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -165,6 +166,7 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
 
     /**
      * Shows the notifications and deep shortcuts associated with {@param icon}.
+     *
      * @return the container if shown or null.
      */
     public static PopupContainerWithArrow showForIcon(BubbleTextView icon) {
@@ -189,6 +191,9 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
         final PopupContainerWithArrow container =
                 (PopupContainerWithArrow) launcher.getLayoutInflater().inflate(
                         R.layout.popup_container, launcher.getDragLayer(), false);
+        if (systemShortcuts.isEmpty()) {
+            return null;
+        }
         container.populateAndShow(icon, shortcutIds, notificationKeys, systemShortcuts);
         return container;
     }
@@ -216,7 +221,7 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
 
     @TargetApi(Build.VERSION_CODES.P)
     private void populateAndShow(final BubbleTextView originalIcon, final List<String> shortcutIds,
-            final List<NotificationKeyData> notificationKeys, List<SystemShortcut> systemShortcuts) {
+                                 final List<NotificationKeyData> notificationKeys, List<SystemShortcut> systemShortcuts) {
         mNumNotifications = notificationKeys.size();
         mOriginalIcon = originalIcon;
 
@@ -274,10 +279,10 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
         setLayoutTransition(new LayoutTransition());
 
         // Load the shortcuts on a background thread and update the container as it animates.
-        final Looper workerLooper = LauncherModel.getWorkerLooper();
-        new Handler(workerLooper).postAtFrontOfQueue(PopupPopulator.createUpdateRunnable(
-                mLauncher, originalItemInfo, new Handler(Looper.getMainLooper()),
-                this, shortcutIds, mShortcuts, notificationKeys));
+//        final Looper workerLooper = LauncherModel.getWorkerLooper();
+//        new Handler(workerLooper).postAtFrontOfQueue(PopupPopulator.createUpdateRunnable(
+//                mLauncher, originalItemInfo, new Handler(Looper.getMainLooper()),
+//                this, shortcutIds, mShortcuts, notificationKeys));
     }
 
     private String getTitleForAccessibility() {
@@ -399,7 +404,7 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
 
     /**
      * Determines when the deferred drag should be started.
-     *
+     * <p>
      * Current behavior:
      * - Start the drag if the touch passes a certain distance from the original touch down.
      */
@@ -415,6 +420,8 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
             public void onPreDragStart(DragObject dragObject) {
                 if (mIsAboveIcon) {
                     // Hide only the icon, keep the text visible.
+                    Log.d("123", "onPreDragStart: Hide only the icon ");
+                    //oh21 修改开始拖动时就隐藏应用名称
                     mOriginalIcon.setIconVisible(false);
                     mOriginalIcon.setVisibility(VISIBLE);
                 } else {
@@ -480,7 +487,8 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
     }
 
     @Override
-    public void onDropCompleted(View target, DragObject d, boolean success) {  }
+    public void onDropCompleted(View target, DragObject d, boolean success) {
+    }
 
     @Override
     public void onDragStart(DragObject dragObject, DragOptions options) {

@@ -21,6 +21,7 @@ import static android.view.MotionEvent.ACTION_DOWN;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
-
+//            Log.d("ShortcutAndWidget", "getChildAt: lp.cellX === " + lp.cellX + " lp.cellY === " + lp.cellY);
             if ((lp.cellX <= x) && (x < lp.cellX + lp.cellHSpan) &&
                     (lp.cellY <= y) && (y < lp.cellY + lp.cellVSpan)) {
                 return child;
@@ -73,12 +74,19 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
         return null;
     }
 
+    //oh21 修改透明度无效，从而避免滑动时的透明度变化
+    @Override
+    public void setAlpha(float alpha) {
+
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int count = getChildCount();
 
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecSize =  MeasureSpec.getSize(heightMeasureSpec);
+        Log.d("ShortcutAndWidget", "onMeasure: widthSpecSize === " + widthSpecSize + " heightSpecSize === " + heightSpecSize);
         setMeasuredDimension(widthSpecSize, heightSpecSize);
 
         for (int i = 0; i < count; i++) {

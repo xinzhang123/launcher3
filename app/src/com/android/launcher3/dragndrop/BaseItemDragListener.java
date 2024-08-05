@@ -106,6 +106,7 @@ public abstract class BaseItemDragListener extends InternalStateHandler implemen
     }
 
     protected boolean onDragStart(DragEvent event) {
+        Log.d(TAG, "onDragStart: ");
         ClipDescription desc =  event.getClipDescription();
         if (desc == null || !desc.hasMimeType(getMimeType())) {
             Log.e(TAG, "Someone started a dragAndDrop before us.");

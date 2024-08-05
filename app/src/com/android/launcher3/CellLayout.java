@@ -281,7 +281,7 @@ public class CellLayout extends ViewGroup {
 
         mShortcutsAndWidgets = new ShortcutAndWidgetContainer(context, mContainerType);
         mShortcutsAndWidgets.setCellDimensions(mCellWidth, mCellHeight, mCountX, mCountY);
-
+        mShortcutsAndWidgets.setBackgroundColor(Color.parseColor("#000000")); //oh21 修改celllayout背景颜色
         mStylusEventHelper = new StylusEventHelper(new SimpleOnStylusPressListener(this), this);
         addView(mShortcutsAndWidgets);
     }
@@ -351,6 +351,7 @@ public class CellLayout extends ViewGroup {
     }
 
     public void setCellDimensions(int width, int height) {
+        Log.d(TAG, "setCellDimensions: : width === " + width + " height === " + height);
         mFixedCellWidth = mCellWidth = width;
         mFixedCellHeight = mCellHeight = height;
         mShortcutsAndWidgets.setCellDimensions(mCellWidth, mCellHeight, mCountX, mCountY);
@@ -733,6 +734,7 @@ public class CellLayout extends ViewGroup {
         result.set(left, top, left + (spanX * mCellWidth), top + (spanY * mCellHeight));
     }
 
+    //oh21 dragview获取中心点距离需要放置的cell单元格的中心点直线距离，使用了3角函数
     public float getDistanceFromCell(float x, float y, int[] cell) {
         cellToCenterPoint(cell[0], cell[1], mTmpPoint);
         return (float) Math.hypot(x - mTmpPoint[0], y - mTmpPoint[1]);
@@ -759,12 +761,15 @@ public class CellLayout extends ViewGroup {
         int heightSize =  MeasureSpec.getSize(heightMeasureSpec);
         int childWidthSize = widthSize - (getPaddingLeft() + getPaddingRight());
         int childHeightSize = heightSize - (getPaddingTop() + getPaddingBottom());
+        Log.d(TAG, "onMeasure: widthSize === " + widthSize + " heightSize === " + heightSize + " childWidthSize === " + childWidthSize + " childHeightSize === " + childHeightSize);
         if (mFixedCellWidth < 0 || mFixedCellHeight < 0) {
             int cw = DeviceProfile.calculateCellWidth(childWidthSize, mCountX);
             int ch = DeviceProfile.calculateCellHeight(childHeightSize, mCountY);
+            Log.d(TAG, "onMeasure: cw === " + cw + " ch === " + ch);
             if (cw != mCellWidth || ch != mCellHeight) {
                 mCellWidth = cw;
                 mCellHeight = ch;
+                Log.d(TAG, "onMeasure: width === " + mCellWidth + " height === " + mCellHeight);
                 mShortcutsAndWidgets.setCellDimensions(mCellWidth, mCellHeight, mCountX, mCountY);
             }
         }
@@ -778,6 +783,7 @@ public class CellLayout extends ViewGroup {
             throw new RuntimeException("CellLayout cannot have UNSPECIFIED dimensions");
         }
 
+        Log.d(TAG, "onMeasure: newWidth " + newWidth + " newHeight " + newHeight);
         mShortcutsAndWidgets.measure(
                 MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.AT_MOST));
@@ -2164,6 +2170,7 @@ public class CellLayout extends ViewGroup {
         intersectingViews.clear();
         Rect r0 = new Rect(cellX, cellY, cellX + spanX, cellY + spanY);
         Rect r1 = new Rect();
+        Log.d(TAG, "getViewsIntersectingRegion: r0 === " + r0);
         final int count = mShortcutsAndWidgets.getChildCount();
         for (int i = 0; i < count; i++) {
             View child = mShortcutsAndWidgets.getChildAt(i);
@@ -2171,6 +2178,7 @@ public class CellLayout extends ViewGroup {
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
             r1.set(lp.cellX, lp.cellY, lp.cellX + lp.cellHSpan, lp.cellY + lp.cellVSpan);
             if (Rect.intersects(r0, r1)) {
+                Log.d(TAG, "getViewsIntersectingRegion: intersects success " + r1);
                 mIntersectingViews.add(child);
                 if (boundingRect != null) {
                     boundingRect.union(r1);
@@ -2182,6 +2190,7 @@ public class CellLayout extends ViewGroup {
     boolean isNearestDropLocationOccupied(int pixelX, int pixelY, int spanX, int spanY,
             View dragView, int[] result) {
         result = findNearestArea(pixelX, pixelY, spanX, spanY, result);
+        Log.d("CellLayout", "isNearestDropLocationOccupied: result X === " + result[0] + " result Y === " + result[1]);
         getViewsIntersectingRegion(result[0], result[1], spanX, spanY, dragView, null,
                 mIntersectingViews);
         return !mIntersectingViews.isEmpty();
@@ -2283,8 +2292,9 @@ public class CellLayout extends ViewGroup {
 
         if (mode == MODE_SHOW_REORDER_HINT) {
             if (finalSolution != null) {
-                beginOrAdjustReorderPreviewAnimations(finalSolution, dragView, 0,
-                        ReorderPreviewAnimation.MODE_HINT);
+                //oh21 去除呼吸动画
+//                beginOrAdjustReorderPreviewAnimations(finalSolution, dragView, 0,
+//                        ReorderPreviewAnimation.MODE_HINT);
                 result[0] = finalSolution.cellX;
                 result[1] = finalSolution.cellY;
                 resultSpan[0] = finalSolution.spanX;
@@ -2322,8 +2332,9 @@ public class CellLayout extends ViewGroup {
                     completeAndClearReorderPreviewAnimations();
                     setItemPlacementDirty(false);
                 } else {
-                    beginOrAdjustReorderPreviewAnimations(finalSolution, dragView,
-                            REORDER_ANIMATION_DURATION,  ReorderPreviewAnimation.MODE_PREVIEW);
+                    //oh21 去掉重新排序的时候的shake动画
+//                    beginOrAdjustReorderPreviewAnimations(finalSolution, dragView,
+//                            REORDER_ANIMATION_DURATION,  ReorderPreviewAnimation.MODE_PREVIEW);
                 }
             }
         } else {
