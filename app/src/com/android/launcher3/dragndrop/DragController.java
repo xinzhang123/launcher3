@@ -657,6 +657,7 @@ public class DragController implements DragDriver.EventListener, TouchController
 
             target.getHitRectRelativeToDragLayer(r);
             if (r.contains(x, y)) {
+                //oh21 这里滑动到了一个DropTarget中
                 dropCoordinates[0] = x;
                 dropCoordinates[1] = y;
                 mLauncher.getDragLayer().mapCoordInSelfToDescendant((View) target, dropCoordinates);

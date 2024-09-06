@@ -52,6 +52,7 @@ public class ItemInfo {
      * will be {@link #NO_ID} (since it is not stored in the settings DB). For user folders
      * it will be the id of the folder.
      */
+    //oh21 是desk还是hotseat
     public long container = NO_ID;
 
     /**
@@ -59,6 +60,7 @@ public class ItemInfo {
      * {@link LauncherSettings.Favorites#CONTAINER_DESKTOP}. (i.e., ignore if the container type is
      * {@link LauncherSettings.Favorites#CONTAINER_HOTSEAT})
      */
+    //oh21 第几个cellLayout
     public long screenId = -1;
 
     /**

@@ -24,7 +24,7 @@ import com.android.launcher3.Workspace;
 
 public class SpringLoadedDragController implements OnAlarmListener {
     // how long the user must hover over a mini-screen before it unshrinks
-    final long ENTER_SPRING_LOAD_HOVER_TIME = 500;
+    final long ENTER_SPRING_LOAD_HOVER_TIME = 500; //oh21 拖拽切换下一页的alarm时间延迟
     final long ENTER_SPRING_LOAD_CANCEL_HOVER_TIME = 950;
 
     Alarm mAlarm;

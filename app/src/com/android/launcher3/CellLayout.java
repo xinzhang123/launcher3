@@ -38,12 +38,15 @@ import android.support.annotation.IntDef;
 import android.support.v4.view.ViewCompat;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.android.launcher3.LauncherSettings.Favorites;
@@ -762,6 +765,13 @@ public class CellLayout extends ViewGroup {
         int childWidthSize = widthSize - (getPaddingLeft() + getPaddingRight());
         int childHeightSize = heightSize - (getPaddingTop() + getPaddingBottom());
         Log.d(TAG, "onMeasure: widthSize === " + widthSize + " heightSize === " + heightSize + " childWidthSize === " + childWidthSize + " childHeightSize === " + childHeightSize);
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getMetrics(dm);
+        int fullWidthSize = dm.widthPixels;
+        int fullHeightSize = dm.heightPixels;
+        Log.d(TAG, "onMeasure: fullWidthSize === " + fullWidthSize + " fullHeightSize === " + fullHeightSize);
         if (mFixedCellWidth < 0 || mFixedCellHeight < 0) {
             int cw = DeviceProfile.calculateCellWidth(childWidthSize, mCountX);
             int ch = DeviceProfile.calculateCellHeight(childHeightSize, mCountY);
@@ -800,7 +810,7 @@ public class CellLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = getPaddingLeft();
-        left += (int) Math.ceil(getUnusedHorizontalSpace() / 2f);
+        left += (int) Math.ceil(getUnusedHorizontalSpace() / 2f); //data 这里左右根据celllayout的宽度 * 个数 算出剩余空间
         int right = r - l - getPaddingRight();
         right -= (int) Math.ceil(getUnusedHorizontalSpace() / 2f);
 

@@ -275,7 +275,7 @@ public class LoaderTask implements Runnable {
             final HashMap<String, SessionInfo> installingPkgs =
                     mPackageInstaller.updateAndGetActiveSessionCache();
             mFirstScreenBroadcast = new FirstScreenBroadcast(installingPkgs);
-            mBgDataModel.workspaceScreens.addAll(LauncherModel.loadWorkspaceScreensDb(context));
+            mBgDataModel.workspaceScreens.addAll(LauncherModel.loadWorkspaceScreensDb(context)); //data这里加载workspace数据
 
             Map<ShortcutKey, ShortcutInfoCompat> shortcutKeyToPinnedShortcuts = new HashMap<>();
             final LoaderCursor c = new LoaderCursor(contentResolver.query(

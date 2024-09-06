@@ -36,7 +36,7 @@ android {
     productFlavors {
         aosp {
             dimension "default"
-            applicationId 'com.android.launcher3'
+            applicationId 'com.android.launcher4'
             testApplicationId 'com.android.launcher3.tests'
         }
 

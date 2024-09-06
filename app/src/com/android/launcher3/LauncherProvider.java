@@ -75,7 +75,7 @@ import static com.android.launcher3.LauncherSettings.Favorites.TABLE_NAME;
 
 public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
-    private static final boolean LOGD = false;
+    private static final boolean LOGD = true;
 
     private static final String DOWNGRADE_SCHEMA_FILE = "downgrade_schema.json";
 

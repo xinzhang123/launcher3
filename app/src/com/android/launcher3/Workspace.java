@@ -499,9 +499,30 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     .inflate(R.layout.search_container_workspace, firstPage, false);
         }
 
-        CellLayout.LayoutParams lp = new CellLayout.LayoutParams(0, 0, firstPage.getCountX(), 1);
+        CellLayout.LayoutParams lp = new CellLayout.LayoutParams(0, 0, firstPage.getCountX(), firstPage.getCountY());
         lp.canReorder = false;
         if (!firstPage.addViewToCellLayout(qsb, 0, R.id.search_container_workspace, lp, true)) {
+            Log.e(TAG, "Failed to add to item at (0, 0) to CellLayout");
+        }
+    }
+
+    public void bindSecondWorkspaceScreen(View qsb) {
+        if (!FeatureFlags.QSB_ON_FIRST_SCREEN) {
+            return;
+        }
+        // Add the first page
+        CellLayout secondPage = insertNewWorkspaceScreen(1, 1);
+        // Always add a QSB on the first screen.
+        if (qsb == null) {
+            // In transposed layout, we add the QSB in the Grid. As workspace does not touch the
+            // edges, we do not need a full width QSB.
+            qsb = LayoutInflater.from(getContext())
+                    .inflate(R.layout.qsb_default_view, secondPage, false);
+        }
+
+        CellLayout.LayoutParams lp = new CellLayout.LayoutParams(0, 0, secondPage.getCountX(), secondPage.getCountY());
+        lp.canReorder = false;
+        if (!secondPage.addViewToCellLayout(qsb, 0, R.id.search_container_hotseat, lp, true)) {
             Log.e(TAG, "Failed to add to item at (0, 0) to CellLayout");
         }
     }
@@ -555,9 +576,37 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         CellLayout newScreen = (CellLayout) LayoutInflater.from(getContext()).inflate(
                         R.layout.workspace_screen, this, false /* attachToRoot */);
         //oh21 add cellLayout布局的时候设置的padding
-        int paddingLeftRight = 100;
-        int paddingBottom = 50;
-        newScreen.setPadding(paddingLeftRight, 100, paddingLeftRight, paddingBottom);
+        int paddingLeftRight = mLauncher.getDeviceProfile().cellLayoutPaddingLeftRightPx;
+        int paddingBottom = mLauncher.getDeviceProfile().cellLayoutBottomPaddingPx;
+        newScreen.setPadding(0, 0, 0, 0);
+
+        mWorkspaceScreens.put(screenId, newScreen);
+        mScreenOrder.add(insertIndex, screenId);
+        addView(newScreen, insertIndex);
+        mStateTransitionAnimation.applyChildState(
+                mLauncher.getStateManager().getState(), newScreen, insertIndex);
+
+        if (mLauncher.getAccessibilityDelegate().isInAccessibleDrag()) {
+            newScreen.enableAccessibleDrag(true, CellLayout.WORKSPACE_ACCESSIBILITY_DRAG);
+        }
+
+        return newScreen;
+    }
+
+    public CellLayout insertNormalScreen(long screenId, int insertIndex) {
+        Log.d(TAG, "insertNewWorkspaceScreen: screenId === " + screenId +" insertIndex === " + insertIndex);
+        if (mWorkspaceScreens.containsKey(screenId)) {
+            throw new RuntimeException("Screen id " + screenId + " already exists!");
+        }
+
+        // Inflate the cell layout, but do not add it automatically so that we can get the newly
+        // created CellLayout.
+        CellLayout newScreen = (CellLayout) LayoutInflater.from(getContext()).inflate(
+                R.layout.workspace_screen, this, false /* attachToRoot */);
+        //oh21 add cellLayout布局的时候设置的padding
+        int paddingLeftRight = mLauncher.getDeviceProfile().cellLayoutPaddingLeftRightPx;
+        int paddingBottom = mLauncher.getDeviceProfile().cellLayoutBottomPaddingPx;
+        newScreen.setPadding(0, 0, 0, 0);
 
         mWorkspaceScreens.put(screenId, newScreen);
         mScreenOrder.add(insertIndex, screenId);
@@ -2139,6 +2188,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
     }
 
+    //oh21 拖拽切换的原因：修改了mDragTargetLayout的值，onDragOver时判断是否要切换
     void setCurrentDropLayout(CellLayout layout) {
         Log.d(TAG, "setCurrentDropLayout: ");
         if (mDragTargetLayout != null) {
@@ -2280,11 +2330,12 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
         final View child = (mDragInfo == null) ? null : mDragInfo.cell;
 
-        //oh21 修改DropCellLayout
+        //oh21 切换当前滑动到的CellLayout
         if (setDropLayoutForDragObject(d, mDragViewVisualCenter[0], mDragViewVisualCenter[1])) {
             if (mLauncher.isHotseatLayout(mDragTargetLayout)) {
                 mSpringLoadedDragController.cancel();
             } else {
+                //oh21 拖拽切换cellLayout的真正执行
                 mSpringLoadedDragController.setAlarm(mDragTargetLayout);
             }
         }
@@ -2367,6 +2418,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
      *
      * @return whether the layout is different from the current {@link #mDragTargetLayout}.
      */
+    //oh21 拖动图标时切换下一页的逻辑，这里需要修改为到边缘处时，切换到下一页或者上一页
     private boolean setDropLayoutForDragObject(DragObject d, float centerX, float centerY) {
         CellLayout layout = null;
         // Test to see if we are over the hotseat first
