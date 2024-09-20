@@ -78,7 +78,6 @@
             android:stateNotNeeded="true"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="user"
-            android:configChanges="keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenSize|screenLayout|smallestScreenSize"
             android:resizeableActivity="true"
             android:resumeWhilePausing="true"
             android:taskAffinity=""
@@ -114,7 +113,7 @@
         -->
         <provider
             android:name="com.android.launcher3.LauncherProvider"
-            android:authorities="com.android.launcher4.settings"
+            android:authorities="com.xiaomi.micolauncher.settings"
             android:exported="true"
             android:writePermission="com.android.launcher4.permission.WRITE_SETTINGS"
             android:readPermission="com.android.launcher4.permission.READ_SETTINGS" />

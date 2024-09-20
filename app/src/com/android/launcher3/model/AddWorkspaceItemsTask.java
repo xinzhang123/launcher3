@@ -74,6 +74,7 @@ public class AddWorkspaceItemsTask extends BaseModelUpdateTask {
                 if (item.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION ||
                         item.itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) {
                     // Short-circuit this logic if the icon exists somewhere on the workspace
+                    //oh21 通过itemsIdMap检查该ShortCut是否已经被加载
                     if (shortcutExists(dataModel, item.getIntent(), item.user)) {
                         continue;
                     }

@@ -18,9 +18,9 @@ package com.android.launcher3;
 
 import static com.android.launcher3.anim.Interpolators.ACCEL;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -31,8 +31,6 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Property;
@@ -40,9 +38,11 @@ import android.util.SparseArray;
 
 import com.android.launcher3.graphics.BitmapInfo;
 
+//oh21 fixme 这个文件需要修改图片长按效果和bitmap显示效果
 public class FastBitmapDrawable extends Drawable {
-
+    private static final String TAG = "FastBitmapDrawable";
     private static final float PRESSED_SCALE = 1.1f;
+    private static final float PRESSED_SMALL_SCALE = 0.8f;
 
     private static final float DISABLED_DESATURATION = 1f;
     private static final float DISABLED_BRIGHTNESS = 0.5f;
@@ -78,11 +78,13 @@ public class FastBitmapDrawable extends Drawable {
 
         @Override
         public void set(FastBitmapDrawable fastBitmapDrawable, Float value) {
+            Log.d("FastBitmapDrawable", "set: " + value);
             fastBitmapDrawable.mScale = value;
             fastBitmapDrawable.invalidateSelf();
         }
     };
     private ObjectAnimator mScaleAnimation;
+    private ObjectAnimator mScaleSmallAnimation;
     private float mScale = 1;
 
 
@@ -114,6 +116,7 @@ public class FastBitmapDrawable extends Drawable {
     @Override
     public final void draw(Canvas canvas) {
         if (mScaleAnimation != null) {
+            Log.d(TAG, "draw: " + mScale);
             int count = canvas.save();
             Rect bounds = getBounds();
             canvas.scale(mScale, mScale, bounds.exactCenterX(), bounds.exactCenterY());
@@ -213,14 +216,23 @@ public class FastBitmapDrawable extends Drawable {
                 mScaleAnimation.cancel();
                 mScaleAnimation = null;
             }
+            if (mScaleSmallAnimation != null) {
+                mScaleSmallAnimation.cancel();
+                mScaleSmallAnimation = null;
+            }
 
             if (mIsPressed) {
-                //oh21 按下图标时去除放大动画
+                //oh21 按下图标时去除放大动画 这里需要继续修改长按图标缩放效果
+
                 // Animate when going to pressed state
-//                mScaleAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SCALE);
-//                mScaleAnimation.setDuration(CLICK_FEEDBACK_DURATION);
-//                mScaleAnimation.setInterpolator(ACCEL);
-//                mScaleAnimation.start();
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.setDuration(CLICK_FEEDBACK_DURATION);
+                mScaleAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SCALE);
+                mScaleAnimation.setInterpolator(ACCEL);
+                mScaleSmallAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SMALL_SCALE);
+                mScaleSmallAnimation.setInterpolator(ACCEL);
+                animatorSet.play(mScaleSmallAnimation).after(mScaleAnimation);
+                animatorSet.start();
             } else {
                 mScale = 1f;
                 invalidateSelf();

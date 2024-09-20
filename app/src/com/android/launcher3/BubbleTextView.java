@@ -60,6 +60,7 @@ import java.text.NumberFormat;
  */
 public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, OnResumeCallback {
 
+    private static final String TAG = "BubbleTextView";
     private static final int DISPLAY_WORKSPACE = 0;
     private static final int DISPLAY_ALL_APPS = 1;
     private static final int DISPLAY_FOLDER = 2;
@@ -173,7 +174,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         setEllipsize(TruncateAt.END);
         setAccessibilityDelegate(mActivity.getAccessibilityDelegate());
         setTextAlpha(1f);
-        setBackgroundColor(Color.parseColor("#FFF0592B")); //oh21 快捷方式的背景颜色
+//        setBackgroundColor(Color.parseColor("#ff0000")); //oh21 快捷方式的背景颜色
     }
 
     @Override
@@ -566,6 +567,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         mDisableRelayout = mIcon != null;
 
         icon.setBounds(0, 0, mIconSize, mIconSize);
+        Log.d(TAG, "applyCompoundDrawables: " + mIconSize);
         if (mLayoutHorizontal) {
             setCompoundDrawablesRelative(icon, null, null, null);
         } else {

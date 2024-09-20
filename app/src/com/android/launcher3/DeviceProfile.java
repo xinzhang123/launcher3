@@ -157,13 +157,13 @@ public class DeviceProfile {
         edgeMarginPx = res.getDimensionPixelSize(R.dimen.dynamic_grid_edge_margin);
         desiredWorkspaceLeftRightMarginPx = isVerticalBarLayout() ? 0 : edgeMarginPx;
         cellLayoutPaddingLeftRightPx =
-                res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_padding);
+                res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_padding); //oh21 fixme celllayout的padding
         cellLayoutBottomPaddingPx =
-                res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_bottom_padding);
+                res.getDimensionPixelSize(R.dimen.dynamic_grid_cell_layout_bottom_padding); //oh21 fixme celllayout的padding
         verticalDragHandleSizePx = res.getDimensionPixelSize(
                 R.dimen.vertical_drag_handle_size);
-        defaultPageSpacingPx =
-                res.getDimensionPixelSize(R.dimen.dynamic_grid_workspace_page_spacing);
+        defaultPageSpacingPx = 0; //oh21 celllayout中间的距离
+//                res.getDimensionPixelSize(R.dimen.dynamic_grid_workspace_page_spacing);
         topWorkspacePadding =
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_workspace_top_padding);
         iconDrawablePaddingOriginalPx =
@@ -336,11 +336,11 @@ public class DeviceProfile {
                     - verticalDragHandleSizePx - topWorkspacePadding;
             float minRequiredHeight = dropTargetBarSizePx + workspaceSpringLoadedBottomSpace;
             workspaceSpringLoadShrinkFactor = Math.min(
-                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f,
+                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f, //oh21 竖屏缩小的倍数
                     1 - (minRequiredHeight / expectedWorkspaceHeight));
         } else {
             workspaceSpringLoadShrinkFactor =
-                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f;
+                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f; //oh21 横屏缩小的倍数
         }
 
         // Folder icon
@@ -421,42 +421,26 @@ public class DeviceProfile {
      * Updates {@link #workspacePadding} as a result of any internal value change to reflect the
      * new workspace padding
      */
+    //oh21 UI workspace的padding设置
     private void updateWorkspacePadding() {
         Rect padding = workspacePadding;
         if (isVerticalBarLayout()) {
             padding.top = 0;
-            padding.bottom = edgeMarginPx;
-            padding.left = hotseatBarSidePaddingPx;
-            padding.right = hotseatBarSidePaddingPx;
-            if (isSeascape()) {
-                padding.left += hotseatBarSizePx;
-                padding.right += verticalDragHandleSizePx;
-            } else {
-                padding.left += verticalDragHandleSizePx;
-                padding.right += hotseatBarSizePx;
-            }
+            padding.bottom = 0;
+            padding.left = 0;
+            padding.right = 0;
+//            if (isSeascape()) {
+//                padding.left += hotseatBarSizePx;
+//                padding.right += verticalDragHandleSizePx;
+//            } else {
+//                padding.left += verticalDragHandleSizePx;
+//                padding.right += hotseatBarSizePx;
+//            }
         } else {
-            int paddingBottom = hotseatBarSizePx + verticalDragHandleSizePx;
-            if (isTablet) {
-                // Pad the left and right of the workspace to ensure consistent spacing
-                // between all icons
-                // The amount of screen space available for left/right padding.
-                int availablePaddingX = Math.max(0, widthPx - ((inv.numColumns * cellWidthPx) +
-                        ((inv.numColumns - 1) * cellWidthPx)));
-                availablePaddingX = (int) Math.min(availablePaddingX,
-                        widthPx * MAX_HORIZONTAL_PADDING_PERCENT);
-                int availablePaddingY = Math.max(0, heightPx - topWorkspacePadding - paddingBottom
-                        - (2 * inv.numRows * cellHeightPx) - hotseatBarTopPaddingPx
-                        - hotseatBarBottomPaddingPx);
-                padding.set(availablePaddingX / 2, topWorkspacePadding + availablePaddingY / 2,
-                        availablePaddingX / 2, paddingBottom + availablePaddingY / 2);
-            } else {
-                // Pad the top and bottom of the workspace with search/hotseat bar sizes
-                padding.set(desiredWorkspaceLeftRightMarginPx,
-                        topWorkspacePadding,
-                        desiredWorkspaceLeftRightMarginPx,
-                        paddingBottom);
-            }
+            padding.top = 0;
+            padding.bottom = 0;
+            padding.left = 0;
+            padding.right = 0;
         }
     }
 

@@ -21,6 +21,7 @@ import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
@@ -200,5 +201,15 @@ public class LauncherAppState {
         }
         return provider;
         // modify by codemx.cn --20190322--------end
+    }
+
+    //oh21 这里把Launcher改成不使用configChange处理横竖屏，从Oncreate中主动处理Ui。看看要不要把onConfigurationChanged其他逻辑也拿到这个里面
+    private int curOrientation = Configuration.ORIENTATION_LANDSCAPE;
+    public void doConfigChange() {
+        if (curOrientation != mContext.getResources().getConfiguration().orientation) {
+            //分辨率发生变化调整icon大小和hotseat icon 大小
+            updateDeviceProfile();
+            curOrientation = mContext.getResources().getConfiguration().orientation;
+        }
     }
 }

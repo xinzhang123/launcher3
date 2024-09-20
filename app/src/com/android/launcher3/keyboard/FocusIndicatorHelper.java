@@ -163,7 +163,7 @@ public abstract class FocusIndicatorHelper implements
 
                 mCurrentAnimation = ObjectAnimator.ofPropertyValuesHolder(this,
                         PropertyValuesHolder.ofFloat(ALPHA, 1),
-                        PropertyValuesHolder.ofFloat(SHIFT, 1));
+                        PropertyValuesHolder.ofFloat(SHIFT, 1));//oh21 焦点动画
                 mCurrentAnimation.addListener(new ViewSetListener(v, true));
             } else {
                 setCurrentView(v);

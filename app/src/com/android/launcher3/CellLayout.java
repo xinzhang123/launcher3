@@ -284,7 +284,7 @@ public class CellLayout extends ViewGroup {
 
         mShortcutsAndWidgets = new ShortcutAndWidgetContainer(context, mContainerType);
         mShortcutsAndWidgets.setCellDimensions(mCellWidth, mCellHeight, mCountX, mCountY);
-        mShortcutsAndWidgets.setBackgroundColor(Color.parseColor("#000000")); //oh21 修改celllayout背景颜色
+//        mShortcutsAndWidgets.setBackgroundColor(Color.parseColor("#FFF0592B")); //oh21 修改celllayout背景颜色
         mStylusEventHelper = new StylusEventHelper(new SimpleOnStylusPressListener(this), this);
         addView(mShortcutsAndWidgets);
     }
@@ -810,7 +810,7 @@ public class CellLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = getPaddingLeft();
-        left += (int) Math.ceil(getUnusedHorizontalSpace() / 2f); //data 这里左右根据celllayout的宽度 * 个数 算出剩余空间
+        left += (int) Math.ceil(getUnusedHorizontalSpace() / 2f); //oh21 data 这里左右根据celllayout的宽度 * 个数 算出剩余空间
         int right = r - l - getPaddingRight();
         right -= (int) Math.ceil(getUnusedHorizontalSpace() / 2f);
 

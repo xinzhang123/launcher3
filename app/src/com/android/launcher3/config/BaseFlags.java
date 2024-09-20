@@ -29,7 +29,7 @@ abstract class BaseFlags {
     BaseFlags() {}
 
     public static final boolean IS_DOGFOOD_BUILD = false;
-    public static final String AUTHORITY = "com.android.launcher4.settings".intern();
+    public static final String AUTHORITY = "com.xiaomi.micolauncher.settings".intern();
 
     // When enabled allows to use any point on the fast scrollbar to start dragging.
     public static final boolean LAUNCHER3_DIRECT_SCROLL = true;
@@ -40,7 +40,7 @@ abstract class BaseFlags {
 
     // Feature flag to enable moving the QSB on the 0th screen of the workspace.
     //删除第一页
-    public static final boolean QSB_ON_FIRST_SCREEN = true;
+    public static final boolean QSB_ON_FIRST_SCREEN = false;
     // When enabled the all-apps icon is not added to the hotseat.
     public static final boolean NO_ALL_APPS_ICON = true;
 

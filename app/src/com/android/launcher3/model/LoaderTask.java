@@ -468,6 +468,7 @@ public class LoaderTask implements Runnable {
                                 info = c.getRestoredItemInfo(intent);
                             } else if (c.itemType ==
                                     LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+                                //oh21 这里是创建出ShortCutInfo的地方
                                 info = c.getAppShortcutInfo(
                                         intent, allowMissingTarget, useLowResIcon);
                             } else if (c.itemType ==

@@ -11,6 +11,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+//oh21 fixme 这里配置app_default_filter.json文件中需要过滤不显示的app包名
+/*"com.miui.weather2",
+  "com.android.camera",
+  "com.android.settings",
+  "com.miui.gallery",
+  "com.android.deskclock",
+  "com.android.fileexplorer",
+  "com.tencent.android.qqdownloader"*/
 public class AppFilter {
     private static List<String> mFilterPackages;
     private static String TAG = "AppFilter";
@@ -24,6 +32,7 @@ public class AppFilter {
         String pkg = app.getPackageName();
         Log.i("AppFilter", pkg);
         return mFilterPackages.isEmpty() ? true : !mFilterPackages.contains(pkg);
+//        return mFilterPackages.isEmpty() ? false : mFilterPackages.contains(pkg); //oh21 条件取反
     }
 
     private static void loadFilterPackages(Context context) {

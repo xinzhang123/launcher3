@@ -176,13 +176,14 @@ public class WidgetsModel {
             if (mAppFilter == null) {
                 mAppFilter = AppFilter.newInstance(app.getContext());
             }
-            if (!mAppFilter.shouldShowApp(item.componentName)) {
-                if (DEBUG) {
-                    Log.d(TAG, String.format("%s is filtered and not added to the widget tray.",
-                            item.componentName));
-                }
-                continue;
-            }
+            //oh21 去掉了包名过滤逻辑
+//            if (!mAppFilter.shouldShowApp(item.componentName)) {
+//                if (DEBUG) {
+//                    Log.d(TAG, String.format("%s is filtered and not added to the widget tray.",
+//                            item.componentName));
+//                }
+//                continue;
+//            }
 
             String packageName = item.componentName.getPackageName();
             PackageItemInfo pInfo = tmpPackageItemInfos.get(packageName);

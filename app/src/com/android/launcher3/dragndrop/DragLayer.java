@@ -273,7 +273,7 @@ public class DragLayer extends BaseDragLayer<Launcher> {
 
         int coord[] = new int[2];
         float childScale = child.getScaleX();
-        coord[0] = lp.x + (int) (child.getMeasuredWidth() * (1 - childScale) / 2);
+        coord[0] = lp.x + (int) (child.getMeasuredWidth() * (1 - childScale) / 2); //oh21 fixme drop释放后dragview移动到的坐标
         coord[1] = lp.y + (int) (child.getMeasuredHeight() * (1 - childScale) / 2);
 
         // Since the child hasn't necessarily been laid out, we force the lp to be updated with

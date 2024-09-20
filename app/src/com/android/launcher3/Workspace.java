@@ -193,7 +193,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
     // Variables relating to the creation of user folders by hovering shortcuts over shortcuts
     private static final int FOLDER_CREATION_TIMEOUT = 0;
-    public static final int REORDER_TIMEOUT = 250; //oh21 修改重新排序的alarm延迟 原来是650
+    public static final int REORDER_TIMEOUT = 650; //oh21 修改重新排序的alarm延迟 原来是650
     private final Alarm mFolderCreationAlarm = new Alarm();
     private final Alarm mReorderAlarm = new Alarm();
     private PreviewBackground mFolderCreateBg;
@@ -281,6 +281,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         setOnTouchListener(new WorkspaceTouchListener(mLauncher, this));
     }
 
+    //oh21 ui初始化workspace ui的参数，padding值
     @Override
     public void setInsets(Rect insets) {
         mInsets.set(insets);
@@ -289,25 +290,25 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         mMaxDistanceForFolderCreation = (0.55f * grid.iconSizePx);
         mWorkspaceFadeInAdjacentScreens = grid.shouldFadeAdjacentWorkspaceScreens();
 
-        Rect padding = grid.workspacePadding;
-        setPadding(padding.left, padding.top, padding.right, padding.bottom);
+//        Rect padding = grid.workspacePadding;
+//        setPadding(padding.left, padding.top, padding.right, padding.bottom);
 
-        if (grid.shouldFadeAdjacentWorkspaceScreens()) {
-            // In landscape mode the page spacing is set to the default.
-            setPageSpacing(grid.defaultPageSpacingPx);
-        } else {
-            // In portrait, we want the pages spaced such that there is no
-            // overhang of the previous / next page into the current page viewport.
-            // We assume symmetrical padding in portrait mode.
-            setPageSpacing(Math.max(grid.defaultPageSpacingPx, padding.left + 1));
-        }
+//        if (grid.shouldFadeAdjacentWorkspaceScreens()) {
+//            // In landscape mode the page spacing is set to the default.
+//            setPageSpacing(grid.defaultPageSpacingPx);
+//        } else {
+//            // In portrait, we want the pages spaced such that there is no
+//            // overhang of the previous / next page into the current page viewport.
+//            // We assume symmetrical padding in portrait mode.
+//            setPageSpacing(Math.max(grid.defaultPageSpacingPx, padding.left + 1)); //oh21 celllayout之间的距离
+//        }
 
-        int paddingLeftRight = grid.cellLayoutPaddingLeftRightPx;
-        int paddingBottom = grid.cellLayoutBottomPaddingPx;
-        for (int i = mWorkspaceScreens.size() - 1; i >= 0; i--) {
-            mWorkspaceScreens.valueAt(i)
-                    .setPadding(paddingLeftRight, 0, paddingLeftRight, paddingBottom);
-        }
+//        int paddingLeftRight = grid.cellLayoutPaddingLeftRightPx;
+//        int paddingBottom = grid.cellLayoutBottomPaddingPx;
+//        for (int i = mWorkspaceScreens.size() - 1; i >= 0; i--) {
+//            mWorkspaceScreens.valueAt(i)
+//                    .setPadding(paddingLeftRight, 0, paddingLeftRight, paddingBottom);
+//        }
     }
 
     /**
@@ -578,7 +579,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         //oh21 add cellLayout布局的时候设置的padding
         int paddingLeftRight = mLauncher.getDeviceProfile().cellLayoutPaddingLeftRightPx;
         int paddingBottom = mLauncher.getDeviceProfile().cellLayoutBottomPaddingPx;
-        newScreen.setPadding(0, 0, 0, 0);
+        newScreen.setPadding(paddingLeftRight, paddingBottom, paddingLeftRight, paddingBottom);
 
         mWorkspaceScreens.put(screenId, newScreen);
         mScreenOrder.add(insertIndex, screenId);

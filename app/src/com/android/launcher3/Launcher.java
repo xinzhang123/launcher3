@@ -295,9 +295,11 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         TraceHelper.beginSection("Launcher-onCreate");
 
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "lifecycler onCreate: ");
         TraceHelper.partitionSection("Launcher-onCreate", "super call");
 
         LauncherAppState app = LauncherAppState.getInstance(this);
+        app.doConfigChange();
         mOldConfig = new Configuration(getResources().getConfiguration());
         mModel = app.setLauncher(this);
         initDeviceProfile(app.getInvariantDeviceProfile());
@@ -376,6 +378,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        Log.d(TAG, "lifecycler onConfigurationChanged: ");
         int diff = newConfig.diff(mOldConfig);
         if ((diff & (CONFIG_ORIENTATION | CONFIG_SCREEN_SIZE)) != 0) {
             mUserEventDispatcher = null;
@@ -786,6 +789,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG, "lifecycler onStop: ");
         FirstFrameAnimatorHelper.setIsVisible(false);
 
         if (mLauncherCallbacks != null) {
@@ -806,6 +810,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "lifecycler onStart: ");
         FirstFrameAnimatorHelper.setIsVisible(true);
 
         if (mLauncherCallbacks != null) {
@@ -828,6 +833,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     protected void onResume() {
         TraceHelper.beginSection("ON_RESUME");
         super.onResume();
+        Log.d(TAG, "lifecycler onResume: ");
         TraceHelper.partitionSection("ON_RESUME", "superCall");
 
         mHandler.removeCallbacks(mLogOnDelayedResume);
@@ -1370,7 +1376,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        Log.d(TAG, "lifecycler onDestroy: ");
         unregisterReceiver(mScreenOffReceiver);
         mWorkspace.removeFolderListeners();
 
@@ -1910,7 +1916,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         // Get the list of added items and intersect them with the set of items here
         final AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
         final Collection<Animator> bounceAnims = new ArrayList<>();
-        final boolean animateIcons = forceAnimateIcons && canRunNewAppsAnimation();
+        final boolean animateIcons = forceAnimateIcons && canRunNewAppsAnimation();  //oh21 加载BubbleTextView的动画变量控制
         Workspace workspace = mWorkspace;
         long newItemsScreenId = -1;
         int end = items.size();

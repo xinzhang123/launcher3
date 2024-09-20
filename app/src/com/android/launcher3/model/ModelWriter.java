@@ -213,6 +213,7 @@ public class ModelWriter {
      * Add an item to the database in a specified container. Sets the container, screen, cellX and
      * cellY fields of the item. Also assigns an ID to the item.
      */
+    //oh21 将ItemInfo的数据写入ContentProvider
     public void addItemToDatabase(final ItemInfo item,
             long container, long screenId, int cellX, int cellY) {
         updateItemInfoProps(item, container, screenId, cellX, cellY);
