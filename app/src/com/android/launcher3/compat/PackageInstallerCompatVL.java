@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+//oh21 apk安装install过程的监听:开始安装->安装中->安装成功
 public class PackageInstallerCompatVL extends PackageInstallerCompat {
 
     private static final boolean DEBUG = false;

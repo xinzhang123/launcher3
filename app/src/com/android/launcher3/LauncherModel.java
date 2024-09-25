@@ -459,7 +459,7 @@ public class LauncherModel extends BroadcastReceiver
                     loaderResults.bindWorkspace();
                     // For now, continue posting the binding of AllApps as there are other
                     // issues that arise from that.
-                    loaderResults.bindAllApps();
+//                    loaderResults.bindAllApps(); //oh21 跟LoadTask中注释loadAllApps一个意思
                     loaderResults.bindDeepShortcuts();
                     loaderResults.bindWidgets();
                     return true;

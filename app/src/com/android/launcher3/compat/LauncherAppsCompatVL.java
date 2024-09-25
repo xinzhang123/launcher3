@@ -38,6 +38,7 @@ import com.android.launcher3.util.PackageUserKey;
 import java.util.ArrayList;
 import java.util.List;
 
+//oh21 LauncherApps的实现类，监听应用状态回调OnAppsChangedCallbackCompat接口
 public class LauncherAppsCompatVL extends LauncherAppsCompat {
 
     protected final LauncherApps mLauncherApps;

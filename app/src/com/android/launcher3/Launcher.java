@@ -299,7 +299,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         TraceHelper.partitionSection("Launcher-onCreate", "super call");
 
         LauncherAppState app = LauncherAppState.getInstance(this);
-        app.doConfigChange();
+//        app.doConfigChange();
         mOldConfig = new Configuration(getResources().getConfiguration());
         mModel = app.setLauncher(this);
         initDeviceProfile(app.getInvariantDeviceProfile());

@@ -16,6 +16,9 @@
 
 package com.android.launcher3;
 
+import static android.content.pm.ActivityInfo.CONFIG_ORIENTATION;
+import static android.content.pm.ActivityInfo.CONFIG_SCREEN_SIZE;
+
 import android.content.ComponentName;
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -53,6 +56,7 @@ public class LauncherAppState {
     private final WidgetPreviewLoader mWidgetCache;
     private final InvariantDeviceProfile mInvariantDeviceProfile;
     private final SettingsObserver mNotificationBadgingObserver;
+//    private Configuration mOldConfig; //oh21 当前横竖屏状态
 
     public static LauncherAppState getInstance(final Context context) {
         if (INSTANCE == null) {
@@ -95,6 +99,8 @@ public class LauncherAppState {
         mIconCache = new IconCache(mContext, mInvariantDeviceProfile);
         mWidgetCache = new WidgetPreviewLoader(mContext, mIconCache);
         mModel = new LauncherModel(this, mIconCache, AppFilter.newInstance(mContext));
+
+//        mOldConfig = new Configuration(mContext.getResources().getConfiguration());
 
         LauncherAppsCompat.getInstance(mContext).addOnAppsChangedCallback(mModel);
 
@@ -203,13 +209,13 @@ public class LauncherAppState {
         // modify by codemx.cn --20190322--------end
     }
 
-    //oh21 这里把Launcher改成不使用configChange处理横竖屏，从Oncreate中主动处理Ui。看看要不要把onConfigurationChanged其他逻辑也拿到这个里面
-    private int curOrientation = Configuration.ORIENTATION_LANDSCAPE;
+    //oh21 fixme 这里把Launcher改成不使用configChange处理横竖屏，从Oncreate中主动处理Ui。看看要不要把onConfigurationChanged其他逻辑也拿到这个里面
     public void doConfigChange() {
-        if (curOrientation != mContext.getResources().getConfiguration().orientation) {
-            //分辨率发生变化调整icon大小和hotseat icon 大小
-            updateDeviceProfile();
-            curOrientation = mContext.getResources().getConfiguration().orientation;
-        }
+//        Configuration newConfig = mContext.getResources().getConfiguration();
+//        int diff = mOldConfig.diff(newConfig);
+//        if ((diff & (CONFIG_ORIENTATION | CONFIG_SCREEN_SIZE)) != 0) {
+//            updateDeviceProfile();
+//        }
+//        mOldConfig.setTo(newConfig);
     }
 }
