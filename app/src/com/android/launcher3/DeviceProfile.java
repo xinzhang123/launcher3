@@ -167,7 +167,7 @@ public class DeviceProfile {
         topWorkspacePadding =
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_workspace_top_padding);
         iconDrawablePaddingOriginalPx =
-                res.getDimensionPixelSize(R.dimen.dynamic_grid_icon_drawable_padding);
+                res.getDimensionPixelSize(R.dimen.dynamic_grid_icon_drawable_padding); //oh21 fixme 这里设置BubbleTextView的drawablePadding
         dropTargetBarSizePx = res.getDimensionPixelSize(R.dimen.dynamic_grid_drop_target_size);
         workspaceSpringLoadedBottomSpace =
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_min_spring_loaded_space);
@@ -287,6 +287,7 @@ public class DeviceProfile {
         float usedHeight = (cellHeightPx * inv.numRows);
         int maxHeight = (availableHeightPx - getTotalWorkspacePadding().y);
         if (usedHeight > maxHeight) {
+            //oh21 这里是根据deviceProfile读出的属性都配置后发现使用heigh大于屏幕height，则需要按比例缩放
             float scale = maxHeight / usedHeight;
             updateIconSize(scale, res, dm);
         }
@@ -381,7 +382,7 @@ public class DeviceProfile {
                 (int) (res.getDimensionPixelSize(R.dimen.folder_child_text_size) * scale);
 
         int textHeight = Utilities.calculateTextHeight(folderChildTextSizePx);
-        int cellPaddingX = (int) (res.getDimensionPixelSize(R.dimen.folder_cell_x_padding) * scale);
+        int cellPaddingX = (int) (res.getDimensionPixelSize(R.dimen.folder_cell_x_padding) * scale);//oh21 文件夹cell的padding设置
         int cellPaddingY = (int) (res.getDimensionPixelSize(R.dimen.folder_cell_y_padding) * scale);
 
         folderCellWidthPx = folderChildIconSizePx + 2 * cellPaddingX;
@@ -399,6 +400,7 @@ public class DeviceProfile {
         return mInsets;
     }
 
+    //oh21 算出cellWidth和cellHeight
     public Point getCellSize() {
         Point result = new Point();
         // Since we are only concerned with the overall padding, layout direction does

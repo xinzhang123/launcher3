@@ -128,6 +128,9 @@ public class FastBitmapDrawable extends Drawable {
     }
 
     protected void drawInternal(Canvas canvas, Rect bounds) {
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor("#000000"));
+        canvas.drawRect(bounds, paint);
         canvas.drawBitmap(mBitmap, null, bounds, mPaint);
         // 初始化绘制纹理图
 //        BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);

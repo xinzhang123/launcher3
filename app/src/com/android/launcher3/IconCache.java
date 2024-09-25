@@ -460,6 +460,7 @@ public class IconCache {
     /**
      * Fill in {@param info} with the icon and label for {@param activityInfo}
      */
+    //oh21 给ItemInfo设置drawable和name的方法
     public synchronized void getTitleAndIcon(ItemInfoWithIcon info,
             LauncherActivityInfo activityInfo, boolean useLowResIcon) {
         // If we already have activity info, no need to use package icon

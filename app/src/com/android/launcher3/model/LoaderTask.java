@@ -185,12 +185,12 @@ public class LoaderTask implements Runnable {
 
             // second step
             TraceHelper.partitionSection(TAG, "step 2.1: loading all apps");
-            loadAllApps();
+//            loadAllApps(); //oh21 fixme 加载AllAppsContainerView的数据，用不到。看后续时候有更新icon的bug
             getAllApplications();
 
-            TraceHelper.partitionSection(TAG, "step 2.2: Binding all apps");
-            verifyNotStopped();
-            mResults.bindAllApps();
+//            TraceHelper.partitionSection(TAG, "step 2.2: Binding all apps");
+//            verifyNotStopped();
+//            mResults.bindAllApps();//oh21 加载AllAppsContainerView。看后续时候有更新icon的bug
 
             verifyNotStopped();
             TraceHelper.partitionSection(TAG, "step 2.3: Update icon cache");
@@ -880,7 +880,7 @@ public class LoaderTask implements Runnable {
             ArrayList<InstallShortcutReceiver.PendingInstallShortcutInfo> added = new ArrayList<InstallShortcutReceiver.PendingInstallShortcutInfo>();
             synchronized (this) {
                 for (LauncherActivityInfo app : apps) {
-                    //隐藏不需要显示的应用
+                    //oh21 隐藏不需要显示的应用
                     if(isHideApplication(context,app.getComponentName())){
                         continue;
                     }

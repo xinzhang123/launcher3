@@ -2663,6 +2663,7 @@ public class CellLayout extends ViewGroup {
          * ie. In multi-window mode, we setup widgets so that they are measured and laid out
          * using their full/invariant device profile sizes.
          */
+        //oh21 这里为每个cell单元设置宽高、坐标
         public void setup(int cellWidth, int cellHeight, boolean invertHorizontally, int colCount,
                 float cellScaleX, float cellScaleY) {
             if (isLockedToGrid) {
