@@ -1610,7 +1610,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         mOutlineProvider = previewProvider;
 
         // The drag bitmap follows the touch point around on the screen
-        final Bitmap b = previewProvider.createDragBitmap();
+        final Bitmap b = previewProvider.createDragBitmap();//oh21 fixme 这里的bitmap的width和height的值加了blurSizeOutline
         Log.d(TAG, "beginDragShared: b.getWidth() === " + b.getWidth() + " b.getHeight() === " + b.getHeight());
         int halfPadding = previewProvider.previewPadding / 2;
 
@@ -2038,6 +2038,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                         }
                     }
 
+                    //oh21 dragview drop当前itemInfo重新写入数据库的数据
                     mLauncher.getModelWriter().modifyItemInDatabase(info, container, screenId,
                             lp.cellX, lp.cellY, item.spanX, item.spanY);
                 } else {
@@ -2075,6 +2076,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                     animateWidgetDrop(info, parent, d.dragView, null, animationType, cell, false);
                 } else {
                     int duration = snapScreen < 0 ? -1 : ADJACENT_SCREEN_DROP_DURATION;
+                    Log.d(TAG, "onDrop: snapScreen === " + snapScreen + " duration === " + duration);
                     mLauncher.getDragLayer().animateViewIntoPosition(d.dragView, cell, duration,
                             this);
                 }
@@ -2764,6 +2766,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
             }
             // Add the item to DB before adding to screen ensures that the container and other
             // values of the info is properly updated.
+            //oh21 文件夹中拖拽到workspace写入数据库
             mLauncher.getModelWriter().addOrMoveItemInDatabase(info, container, screenId,
                     mTargetCell[0], mTargetCell[1]);
 

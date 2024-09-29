@@ -47,6 +47,7 @@ import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.DragSource;
 import com.android.launcher3.DropTarget;
 import com.android.launcher3.DropTarget.DragObject;
+import com.android.launcher3.FolderInfo;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.Launcher;
@@ -59,6 +60,7 @@ import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.dragndrop.DragOptions;
 import com.android.launcher3.dragndrop.DragView;
+import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.logging.LoggerUtils;
 import com.android.launcher3.notification.NotificationInfo;
 import com.android.launcher3.notification.NotificationItemView;
@@ -195,6 +197,35 @@ public class PopupContainerWithArrow extends ArrowPopup implements DragSource,
             return null;
         }
         container.populateAndShow(icon, shortcutIds, notificationKeys, systemShortcuts);
+        return container;
+    }
+
+    public static PopupContainerWithArrow showForFolderIcon(FolderIcon folderIcon) {
+        Launcher launcher = Launcher.getLauncher(folderIcon.getContext());
+        if (getOpen(launcher) != null) {
+            // There is already an items container open, so don't open this one.
+            folderIcon.clearFocus();
+            return null;
+        }
+        FolderInfo folderInfo = (FolderInfo) folderIcon.getTag();
+        if (!DeepShortcutManager.supportsShortcuts(folderInfo)) {
+            return null;
+        }
+
+        PopupDataProvider popupDataProvider = launcher.getPopupDataProvider();
+        List<String> shortcutIds = popupDataProvider.getShortcutIdsForItem(folderInfo);
+        List<NotificationKeyData> notificationKeys = popupDataProvider
+                .getNotificationKeysForItem(folderInfo);
+        List<SystemShortcut> systemShortcuts = popupDataProvider
+                .getEnabledSystemShortcutsForItem(folderInfo);
+
+        final PopupContainerWithArrow container =
+                (PopupContainerWithArrow) launcher.getLayoutInflater().inflate(
+                        R.layout.popup_container, launcher.getDragLayer(), false);
+        if (systemShortcuts.isEmpty()) {
+            return null;
+        }
+//        container.populateAndShow(folderInfo, shortcutIds, notificationKeys, systemShortcuts);
         return container;
     }
 

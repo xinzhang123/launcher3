@@ -144,8 +144,8 @@ public class Partner {
         }
 
         if (numRows > 0 && numColumns > 0) {
-            inv.numRows = numRows;
-            inv.numColumns = numColumns;
+            inv.setNumRows(numRows);
+            inv.setNumColumns(numColumns);
         }
 
         if (iconSize > 0) {

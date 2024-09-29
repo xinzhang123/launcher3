@@ -118,6 +118,7 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
                 mLauncher.getDeviceProfile().getCellHeight(mContainerType));
     }
 
+    //oh21 测量cell的宽高、坐标
     public void measureChild(View child) {
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
         final DeviceProfile profile = mLauncher.getDeviceProfile();

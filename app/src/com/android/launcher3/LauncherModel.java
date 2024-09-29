@@ -421,6 +421,7 @@ public class LauncherModel extends BroadcastReceiver
             // Stop any existing loaders first, so they don't set mModelLoaded to true later
             stopLoader();
             mModelLoaded = false;
+            Log.d(TAG, "forceReload: mModelLoaded " + mModelLoaded);
         }
 
         // Start the loader if launcher is already running, otherwise the loader will run,
@@ -454,12 +455,14 @@ public class LauncherModel extends BroadcastReceiver
                 LoaderResults loaderResults = new LoaderResults(mApp, sBgDataModel,
                         mBgAllAppsList, synchronousBindPage, mCallbacks);
                 if (mModelLoaded && !mIsLoaderTaskRunning) {
+                    Log.d(TAG, "startLoader: just bindView");
                     // Divide the set of loaded items into those that we are binding synchronously,
                     // and everything else that is to be bound normally (asynchronously).
+                    fixDataWithConfiguration();
                     loaderResults.bindWorkspace();
                     // For now, continue posting the binding of AllApps as there are other
                     // issues that arise from that.
-//                    loaderResults.bindAllApps(); //oh21 跟LoadTask中注释loadAllApps一个意思
+//                    loaderResults.bindAllApps(); //oh21 跟LoadTask中注释loadAllApps一个意思,做相同处理
                     loaderResults.bindDeepShortcuts();
                     loaderResults.bindWidgets();
                     return true;
@@ -469,6 +472,13 @@ public class LauncherModel extends BroadcastReceiver
             }
         }
         return false;
+    }
+
+    private void fixDataWithConfiguration() {
+        int size = sBgDataModel.workspaceItems.size();
+        for (int i = 0; i < size; i++) {
+
+        }
     }
 
     /**
@@ -485,6 +495,7 @@ public class LauncherModel extends BroadcastReceiver
     }
 
     public void startLoaderForResults(LoaderResults results) {
+        Log.d(TAG, "startLoader: startLoaderForResults");
         synchronized (mLock) {
             stopLoader();
             mLoaderTask = new LoaderTask(mApp, mBgAllAppsList, sBgDataModel, results);
@@ -544,6 +555,7 @@ public class LauncherModel extends BroadcastReceiver
                 mTask = task;
                 mIsLoaderTaskRunning = true;
                 mModelLoaded = false;
+                Log.d(TAG, "LoaderTransaction: mModelLoaded " + mModelLoaded);
             }
         }
 
@@ -551,6 +563,7 @@ public class LauncherModel extends BroadcastReceiver
             synchronized (mLock) {
                 // Everything loaded bind the data.
                 mModelLoaded = true;
+                Log.d(TAG, "commit: mModelLoaded " + mModelLoaded);
             }
         }
 

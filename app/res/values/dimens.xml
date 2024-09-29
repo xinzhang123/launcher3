@@ -24,6 +24,7 @@
     <dimen name="dynamic_grid_icon_drawable_padding">8dp</dimen>
     <dimen name="dynamic_grid_workspace_top_padding">8dp</dimen>
     <dimen name="dynamic_grid_workspace_page_spacing">8dp</dimen>
+    <dimen name="dp_cell_corner">22dp</dimen>
     <!-- Minimum space between workspace and hotseat in spring loaded mode -->
     <dimen name="dynamic_grid_min_spring_loaded_space">8dp</dimen>
 
@@ -166,7 +167,7 @@
     <dimen name="bg_popup_item_width">220dp</dimen>
     <dimen name="bg_popup_item_height">56dp</dimen>
     <dimen name="bg_popup_item_condensed_height">48dp</dimen>
-    <dimen name="pre_drag_view_scale">6dp</dimen>
+    <dimen name="pre_drag_view_scale">10dp</dimen>
     <!-- an icon with shortcuts must be dragged this far before the container is removed. -->
     <dimen name="deep_shortcuts_start_drag_threshold">16dp</dimen>
     <dimen name="deep_shortcut_icon_size">36dp</dimen>

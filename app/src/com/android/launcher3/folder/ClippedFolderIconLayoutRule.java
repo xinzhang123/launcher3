@@ -2,13 +2,14 @@ package com.android.launcher3.folder;
 
 public class ClippedFolderIconLayoutRule {
 
-    public static final int MAX_NUM_ITEMS_IN_PREVIEW = 4;
+    public static final int MAX_NUM_ITEMS_IN_PREVIEW = 9; //oh21 folder 文件夹显示的最大个数
     private static final int MIN_NUM_ITEMS_IN_PREVIEW = 2;
 
     private static final float MIN_SCALE = 0.48f;
     private static final float MAX_SCALE = 0.58f;
     private static final float MAX_RADIUS_DILATION = 0.15f;
     private static final float ITEM_RADIUS_SCALE_FACTOR = 1.33f;
+    private static final float MIN_SCALE_OH27 = 0.18f; //oh21 folder 文件夹item的缩放倍数
 
     public static final int EXIT_INDEX = -2;
     public static final int ENTER_INDEX = -3;
@@ -130,14 +131,14 @@ public class ClippedFolderIconLayoutRule {
     public float scaleForItem(int numItems) {
         // Scale is determined by the number of items in the preview.
         final float scale;
-        if (numItems <= 2) {
-            scale = MAX_SCALE;
-        } else if (numItems == 3) {
-            scale = (MAX_SCALE + MIN_SCALE) / 2;
-        } else {
-            scale = MIN_SCALE;
-        }
-        return scale * mBaselineIconScale;
+//        if (numItems <= 2) {
+//            scale = MAX_SCALE;
+//        } else if (numItems == 3) {
+//            scale = (MAX_SCALE + MIN_SCALE) / 2;
+//        } else {
+//            scale = MIN_SCALE;
+//        }
+        return MIN_SCALE_OH27 * mBaselineIconScale;
     }
 
     public float getIconSize() {

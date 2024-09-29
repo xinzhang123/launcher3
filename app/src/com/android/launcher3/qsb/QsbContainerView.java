@@ -121,7 +121,7 @@ public class QsbContainerView extends FrameLayout {
             InvariantDeviceProfile idp = LauncherAppState.getIDP(activity);
 
             Bundle opts = new Bundle();
-            Rect size = AppWidgetResizeFrame.getWidgetSizeRanges(activity, idp.numColumns, 1, null);
+            Rect size = AppWidgetResizeFrame.getWidgetSizeRanges(activity, idp.getNumColumns(), 1, null);
             opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, size.left);
             opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, size.top);
             opts.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, size.right);

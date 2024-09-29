@@ -83,7 +83,7 @@ public class AutoInstallsLayout {
 
         // Try with grid size and hotseat count
         String layoutName = String.format(Locale.ENGLISH, FORMATTED_LAYOUT_RES_WITH_HOSTEAT,
-            grid.numColumns, grid.numRows, grid.numHotseatIcons);
+            grid.getNumColumns(), grid.getNumRows(), grid.numHotseatIcons);
         int layoutId = targetRes.getIdentifier(layoutName, "xml", pkg);
 
         // Try with only grid size
@@ -91,7 +91,7 @@ public class AutoInstallsLayout {
             Log.d(TAG, "Formatted layout: " + layoutName
                     + " not found. Trying layout without hosteat");
             layoutName = String.format(Locale.ENGLISH, FORMATTED_LAYOUT_RES,
-                grid.numColumns, grid.numRows);
+                grid.getNumColumns(), grid.getNumRows());
             layoutId = targetRes.getIdentifier(layoutName, "xml", pkg);
         }
 
@@ -183,8 +183,8 @@ public class AutoInstallsLayout {
         mLayoutId = layoutId;
 
         mIdp = LauncherAppState.getIDP(context);
-        mRowCount = mIdp.numRows;
-        mColumnCount = mIdp.numColumns;
+        mRowCount = mIdp.getNumRows();
+        mColumnCount = mIdp.getNumColumns();
     }
 
     /**

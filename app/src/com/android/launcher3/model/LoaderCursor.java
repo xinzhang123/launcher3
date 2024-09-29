@@ -433,8 +433,8 @@ public class LoaderCursor extends CursorWrapper {
             return true;
         }
 
-        final int countX = mIDP.numColumns;
-        final int countY = mIDP.numRows;
+        final int countX = mIDP.getNumColumns();
+        final int countY = mIDP.getNumRows();
         if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP &&
                 item.cellX < 0 || item.cellY < 0 ||
                 item.cellX + item.spanX > countX || item.cellY + item.spanY > countY) {

@@ -82,6 +82,7 @@ public class DeviceProfile {
     public int cellWidthPx;
     public int cellHeightPx;
     public int workspaceCellPaddingXPx;
+    public int cellCornerPx;
 
     // Folder
     public int folderIconSizePx;
@@ -168,6 +169,7 @@ public class DeviceProfile {
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_workspace_top_padding);
         iconDrawablePaddingOriginalPx =
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_icon_drawable_padding); //oh21 fixme 这里设置BubbleTextView的drawablePadding
+        cellCornerPx = res.getDimensionPixelSize(R.dimen.dp_cell_corner);
         dropTargetBarSizePx = res.getDimensionPixelSize(R.dimen.dynamic_grid_drop_target_size);
         workspaceSpringLoadedBottomSpace =
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_min_spring_loaded_space);
@@ -284,7 +286,7 @@ public class DeviceProfile {
         updateIconSize(1f, res, dm);
 
         // Check to see if the icons fit within the available height.  If not, then scale down.
-        float usedHeight = (cellHeightPx * inv.numRows);
+        float usedHeight = (cellHeightPx * inv.getNumRows());
         int maxHeight = (availableHeightPx - getTotalWorkspacePadding().y);
         if (usedHeight > maxHeight) {
             //oh21 这里是根据deviceProfile读出的属性都配置后发现使用heigh大于屏幕height，则需要按比例缩放
@@ -337,16 +339,16 @@ public class DeviceProfile {
                     - verticalDragHandleSizePx - topWorkspacePadding;
             float minRequiredHeight = dropTargetBarSizePx + workspaceSpringLoadedBottomSpace;
             workspaceSpringLoadShrinkFactor = Math.min(
-                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f, //oh21 竖屏缩小的倍数
+                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f, //oh21 fixme 应该改成0.875 竖屏缩小的倍数
                     1 - (minRequiredHeight / expectedWorkspaceHeight));
         } else {
             workspaceSpringLoadShrinkFactor =
-                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f; //oh21 横屏缩小的倍数
+                    res.getInteger(R.integer.config_workspaceSpringLoadShrinkPercentage) / 100.0f; //oh21 fixme 应该改成0.875 竖屏缩小的倍数
         }
 
-        // Folder icon
-        folderIconSizePx = IconNormalizer.getNormalizedCircleSize(iconSizePx);
-        folderIconOffsetYPx = (iconSizePx - folderIconSizePx) / 2;
+        //oh21 fixme Folder icon文件夹图标大小
+        folderIconSizePx = iconSizePx;
+        folderIconOffsetYPx = 0;
     }
 
     private void updateAvailableFolderCellDimensions(DisplayMetrics dm, Resources res) {
@@ -407,9 +409,9 @@ public class DeviceProfile {
         // not matter.
         Point padding = getTotalWorkspacePadding();
         result.x = calculateCellWidth(availableWidthPx - padding.x
-                - cellLayoutPaddingLeftRightPx * 2, inv.numColumns);
+                - cellLayoutPaddingLeftRightPx * 2, inv.getNumColumns());
         result.y = calculateCellHeight(availableHeightPx - padding.y
-                - cellLayoutBottomPaddingPx, inv.numRows);
+                - cellLayoutBottomPaddingPx, inv.getNumRows());
         return result;
     }
 
@@ -461,7 +463,7 @@ public class DeviceProfile {
             // icons in the hotseat are a different size, and so don't line up perfectly. To account
             // for this, we pad the left and right of the hotseat with half of the difference of a
             // workspace cell vs a hotseat cell.
-            float workspaceCellWidth = (float) widthPx / inv.numColumns;
+            float workspaceCellWidth = (float) widthPx / inv.getNumColumns();
             float hotseatCellWidth = (float) widthPx / inv.numHotseatIcons;
             int hotseatAdjustment = Math.round((workspaceCellWidth - hotseatCellWidth) / 2);
             mHotseatPadding.set(

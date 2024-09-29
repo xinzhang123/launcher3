@@ -17,10 +17,12 @@
 package com.android.launcher3;
 
 import static com.android.launcher3.anim.Interpolators.ACCEL;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -31,6 +33,8 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Property;
@@ -41,13 +45,12 @@ import com.android.launcher3.graphics.BitmapInfo;
 //oh21 fixme 这个文件需要修改图片长按效果和bitmap显示效果
 public class FastBitmapDrawable extends Drawable {
     private static final String TAG = "FastBitmapDrawable";
-    private static final float PRESSED_SCALE = 1.1f;
-    private static final float PRESSED_SMALL_SCALE = 0.8f;
-
+    private static final float PRESSED_SCALE = 0.8f;
     private static final float DISABLED_DESATURATION = 1f;
     private static final float DISABLED_BRIGHTNESS = 0.5f;
+    public static final float DRAWABLE_CORNER = 40; //oh21 fixme 这里的圆角目前写死，需要修改成从dimens文件中读
 
-    public static final int CLICK_FEEDBACK_DURATION = 200;
+    public static final int CLICK_FEEDBACK_DURATION = 100;
 
     // Since we don't need 256^2 values for combinations of both the brightness and saturation, we
     // reduce the value space to a smaller value V, which reduces the number of cached
@@ -62,6 +65,7 @@ public class FastBitmapDrawable extends Drawable {
     private static final ColorMatrix sTempFilterMatrix = new ColorMatrix();
 
     protected final Paint mPaint = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
+    protected final Paint mPaintPressBg = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
     protected Bitmap mBitmap;
     protected final int mIconColor;
 
@@ -84,7 +88,6 @@ public class FastBitmapDrawable extends Drawable {
         }
     };
     private ObjectAnimator mScaleAnimation;
-    private ObjectAnimator mScaleSmallAnimation;
     private float mScale = 1;
 
 
@@ -128,19 +131,22 @@ public class FastBitmapDrawable extends Drawable {
     }
 
     protected void drawInternal(Canvas canvas, Rect bounds) {
-        Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#000000"));
-        canvas.drawRect(bounds, paint);
-        canvas.drawBitmap(mBitmap, null, bounds, mPaint);
+//        Paint paint1 = new Paint();
+//        paint1.setColor(Color.parseColor("#000000"));
+//        canvas.drawRect(bounds, paint1);
+//        canvas.drawBitmap(mBitmap, null, bounds, mPaint);
         // 初始化绘制纹理图
-//        BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//        paint.setDither(true);
-//        paint.setShader(bitmapShader);
-//        paint.setStrokeWidth(16);
-//        int mWidth = Math.min(mBitmap.getWidth(), mBitmap.getHeight());
-//        canvas.drawRoundRect(new RectF(8, 8, mWidth-8, mWidth-8), 40, 40, paint);
+        BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+//        mPaint.setAntiAlias(true);
+//        mPaint.setDither(true);
+        mPaint.setShader(bitmapShader);
+//        mPaint.setStrokeWidth(16);
+        RectF rectF = new RectF(0, 0, mBitmap.getWidth(), mBitmap.getWidth());
+        canvas.drawRoundRect(rectF, DRAWABLE_CORNER, DRAWABLE_CORNER, mPaint);
+        if (mScale != 1) {
+            mPaintPressBg.setColor(Color.parseColor("#73000000"));
+            canvas.drawRoundRect(rectF, DRAWABLE_CORNER, DRAWABLE_CORNER, mPaintPressBg);
+        }
     }
 
     @Override
@@ -219,23 +225,14 @@ public class FastBitmapDrawable extends Drawable {
                 mScaleAnimation.cancel();
                 mScaleAnimation = null;
             }
-            if (mScaleSmallAnimation != null) {
-                mScaleSmallAnimation.cancel();
-                mScaleSmallAnimation = null;
-            }
 
             if (mIsPressed) {
-                //oh21 按下图标时去除放大动画 这里需要继续修改长按图标缩放效果
-
                 // Animate when going to pressed state
-                AnimatorSet animatorSet = new AnimatorSet();
-                animatorSet.setDuration(CLICK_FEEDBACK_DURATION);
+                //oh21 按下图标时去除放大动画
                 mScaleAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SCALE);
-                mScaleAnimation.setInterpolator(ACCEL);
-                mScaleSmallAnimation = ObjectAnimator.ofFloat(this, SCALE, PRESSED_SMALL_SCALE);
-                mScaleSmallAnimation.setInterpolator(ACCEL);
-                animatorSet.play(mScaleSmallAnimation).after(mScaleAnimation);
-                animatorSet.start();
+                mScaleAnimation.setDuration(CLICK_FEEDBACK_DURATION);
+                mScaleAnimation.setInterpolator(LINEAR);
+                mScaleAnimation.start();
             } else {
                 mScale = 1f;
                 invalidateSelf();

@@ -475,6 +475,7 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
             }
         }
 
+        //oh21 初次安装所有应用或者应用状态变化时，初始化title和icon
         public Pair<ItemInfo, Object> getItemInfo() {
             if (activityInfo != null) {
                 AppInfo appInfo = new AppInfo(mContext, activityInfo, user);
@@ -511,8 +512,8 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
                 InvariantDeviceProfile idp = LauncherAppState.getIDP(mContext);
                 widgetInfo.minSpanX = info.minSpanX;
                 widgetInfo.minSpanY = info.minSpanY;
-                widgetInfo.spanX = Math.min(info.spanX, idp.numColumns);
-                widgetInfo.spanY = Math.min(info.spanY, idp.numRows);
+                widgetInfo.spanX = Math.min(info.spanX, idp.getNumColumns());
+                widgetInfo.spanY = Math.min(info.spanY, idp.getNumRows());
                 return Pair.create((ItemInfo) widgetInfo, (Object) providerInfo);
             } else {
                 ShortcutInfo si = createShortcutInfo(data, LauncherAppState.getInstance(mContext));

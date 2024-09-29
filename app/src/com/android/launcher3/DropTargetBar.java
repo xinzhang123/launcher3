@@ -100,8 +100,8 @@ public class DropTargetBar extends FrameLayout
                 // XXX: If the icon size changes across orientations, we will have to take
                 //      that into account here too.
                 gap = ((grid.widthPx - 2 * grid.edgeMarginPx
-                        - (grid.inv.numColumns * grid.cellWidthPx))
-                        / (2 * (grid.inv.numColumns + 1)))
+                        - (grid.inv.getNumColumns() * grid.cellWidthPx))
+                        / (2 * (grid.inv.getNumColumns() + 1)))
                         + grid.edgeMarginPx;
             } else {
                 gap = grid.desiredWorkspaceLeftRightMarginPx - grid.defaultWidgetPadding.right;

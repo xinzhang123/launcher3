@@ -206,8 +206,8 @@ public class CellLayout extends ViewGroup {
         mCellWidth = mCellHeight = -1;
         mFixedCellWidth = mFixedCellHeight = -1;
 
-        mCountX = grid.inv.numColumns;
-        mCountY = grid.inv.numRows;
+        mCountX = grid.inv.getNumColumns();
+        mCountY = grid.inv.getNumRows();
         mOccupied =  new GridOccupancy(mCountX, mCountY);
         mTmpOccupied = new GridOccupancy(mCountX, mCountY);
 
@@ -2062,6 +2062,7 @@ public class CellLayout extends ViewGroup {
         mShakeAnimators.clear();
     }
 
+    //oh21 dragview 重新排序之后比较tempCell数据，不相同的话则更新
     private void commitTempPlacement() {
         mTmpOccupied.copyTo(mOccupied);
 

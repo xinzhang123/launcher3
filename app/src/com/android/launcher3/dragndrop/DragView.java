@@ -72,13 +72,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_ICON_BADGED;
+import static com.android.launcher3.anim.Interpolators.LINEAR;
 
 public class DragView extends View {
     private static final ColorMatrix sTempMatrix1 = new ColorMatrix();
     private static final ColorMatrix sTempMatrix2 = new ColorMatrix();
 
     public static final int COLOR_CHANGE_DURATION = 120;
-    public static final int VIEW_ZOOM_DURATION = 150;
+    public static final int VIEW_ZOOM_DURATION = 100;
 
     @Thunk static float sDragAlpha = 1f;
 
@@ -148,11 +149,13 @@ public class DragView extends View {
         // Animate the view into the correct position
         mAnim = LauncherAnimUtils.ofFloat(0f, 1f);
         mAnim.setDuration(VIEW_ZOOM_DURATION);
+        mAnim.setInterpolator(LINEAR);
         mAnim.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 final float value = (Float) animation.getAnimatedValue();
 
+                Log.d("DragView", "onAnimationUpdate: " + value);
                 setScaleX(initialScale + (value * (scale - initialScale)));
                 setScaleY(initialScale + (value * (scale - initialScale)));
                 if (sDragAlpha != 1f) {
@@ -568,8 +571,8 @@ public class DragView extends View {
         // Post the animation to skip other expensive work happening on the first frame
         post(new Runnable() {
             public void run() {
-                //oh21 去除图标长按后的放大效果
-//                mAnim.start();
+                //oh21 fixme 图标长按后的放大效果
+                mAnim.start();
             }
         });
     }

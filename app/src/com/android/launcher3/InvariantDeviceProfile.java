@@ -91,6 +91,9 @@ public class InvariantDeviceProfile {
 
     public Point defaultWallpaperSize;
 
+    private int closestNumRows;
+    private int closestNumColumns;
+
     @VisibleForTesting
     public InvariantDeviceProfile() {
     }
@@ -144,15 +147,16 @@ public class InvariantDeviceProfile {
                 invDistWeightedInterpolate(minWidthDps, minHeightDps, closestProfiles);
 
         InvariantDeviceProfile closestProfile = closestProfiles.get(0);
-        numRows = getRowAndColumn(context, closestProfile).x;
-        numColumns = getRowAndColumn(context, closestProfile).y;
-        Log.d(TAG, "initProfile: " + numRows + " " + numColumns);
+        closestNumRows = closestProfile.numRows;
+        closestNumColumns = closestProfile.numColumns;
+        setRowsAndColumns(context);
         numHotseatIcons = closestProfile.numHotseatIcons;
         defaultLayoutId = closestProfile.defaultLayoutId;
         demoModeLayoutId = closestProfile.demoModeLayoutId;
         numFolderRows = closestProfile.numFolderRows;
         numFolderColumns = closestProfile.numFolderColumns;
 
+        //oh21 fixme 应用图标大小
         iconSize = interpolatedDeviceProfileOut.iconSize;
         landscapeIconSize = interpolatedDeviceProfileOut.landscapeIconSize;
         iconBitmapSize = Utilities.pxFromDp(iconSize, dm);
@@ -332,9 +336,31 @@ public class InvariantDeviceProfile {
     }
 
     //oh21 修改竖屏状态下的row和column。这里有bug需要处理，推拽之后cellX和cellY在横竖屏屏上面对不上
-    public Point getRowAndColumn(Context context, InvariantDeviceProfile deviceProfile) {
+    public Point getRowAndColumn(Context context) {
         return context.getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE ? new Point(deviceProfile.numRows, deviceProfile.numColumns) : new Point(deviceProfile.numColumns, deviceProfile.numRows);
+                == Configuration.ORIENTATION_LANDSCAPE ? new Point(closestNumRows, closestNumColumns) : new Point(closestNumRows, closestNumColumns);
+    }
+
+    public void setRowsAndColumns(Context context) {
+        numRows = getRowAndColumn(context).x;
+        numColumns = getRowAndColumn(context).y;
+        Log.d(TAG, "initProfile: numRows " + numRows + " numColumns " + numColumns);
+    }
+
+    public int getNumColumns() {
+        return numColumns;
+    }
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public void setNumColumns(int numColumns) {
+        this.numColumns = numColumns;
+    }
+
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
     }
 
     private float weight(float x0, float y0, float x1, float y1, float pow) {

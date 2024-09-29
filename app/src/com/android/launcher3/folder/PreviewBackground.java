@@ -158,7 +158,7 @@ public class PreviewBackground {
     }
 
     int getRadius() {
-        return previewSize / 2;
+        return previewSize;
     }
 
     int getScaledRadius() {
@@ -166,11 +166,11 @@ public class PreviewBackground {
     }
 
     int getOffsetX() {
-        return basePreviewOffsetX - (getScaledRadius() - getRadius());
+        return basePreviewOffsetX - (getScaledRadius() - getRadius()) / 2;
     }
 
     int getOffsetY() {
-        return basePreviewOffsetY - (getScaledRadius() - getRadius());
+        return basePreviewOffsetY - (getScaledRadius() - getRadius()) / 2;
     }
 
     /**
@@ -307,11 +307,11 @@ public class PreviewBackground {
 
     private void drawCircle(Canvas canvas,float deltaRadius) {
         //oh21 修改文件夹默认的背景为矩形
-//        float radius = getScaledRadius();
+        float radius = getScaledRadius();
 //        canvas.drawCircle(radius + getOffsetX(), radius + getOffsetY(),
 //                radius - deltaRadius, mPaint);
         canvas.drawRoundRect(getOffsetX(), getOffsetY(),
-                getOffsetX() + previewSize, getOffsetY() + previewSize, 40f, 40f, mPaint);
+                getOffsetX() + radius, getOffsetY() + radius, 40f, 40f, mPaint); //oh21 fixme 这里的圆角目前写死，需要修改成从dimens文件中读
     }
 
     public Path getClipPath() {

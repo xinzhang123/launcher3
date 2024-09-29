@@ -279,7 +279,7 @@ public class AddWorkspaceItemsTask extends BaseModelUpdateTask {
             int[] xy, int spanX, int spanY) {
         InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
 
-        GridOccupancy occupied = new GridOccupancy(profile.numColumns, profile.numRows);
+        GridOccupancy occupied = new GridOccupancy(profile.getNumColumns(), profile.getNumRows());
         if (occupiedPos != null) {
             for (ItemInfo r : occupiedPos) {
                 occupied.markCells(r, true);

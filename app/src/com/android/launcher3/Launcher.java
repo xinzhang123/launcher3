@@ -443,6 +443,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     private void initDeviceProfile(InvariantDeviceProfile idp) {
         // Load configuration-specific DeviceProfile
+        idp.setRowsAndColumns(this); //oh21 重新设置rows和columns
         mDeviceProfile = idp.getDeviceProfile(this);
         if (isInMultiWindowModeCompat()) {
             Display display = getWindowManager().getDefaultDisplay();

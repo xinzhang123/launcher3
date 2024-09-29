@@ -198,7 +198,7 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
     private boolean setupWidget() {
         LauncherAppWidgetProviderInfo widgetInfo = LauncherAppWidgetProviderInfo
                 .fromProviderInfo(this, mRequest.getAppWidgetProviderInfo(this));
-        if (widgetInfo.minSpanX > mIdp.numColumns || widgetInfo.minSpanY > mIdp.numRows) {
+        if (widgetInfo.minSpanX > mIdp.getNumColumns() || widgetInfo.minSpanY > mIdp.getNumRows()) {
             // Cannot add widget
             return false;
         }
@@ -208,8 +208,8 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
         mAppWidgetHost = new LauncherAppWidgetHost(this);
 
         mPendingWidgetInfo = new PendingAddWidgetInfo(widgetInfo);
-        mPendingWidgetInfo.spanX = Math.min(mIdp.numColumns, widgetInfo.spanX);
-        mPendingWidgetInfo.spanY = Math.min(mIdp.numRows, widgetInfo.spanY);
+        mPendingWidgetInfo.spanX = Math.min(mIdp.getNumColumns(), widgetInfo.spanX);
+        mPendingWidgetInfo.spanY = Math.min(mIdp.getNumRows(), widgetInfo.spanY);
         mWidgetOptions = WidgetHostViewLoader.getDefaultOptionsForWidget(this, mPendingWidgetInfo);
 
         WidgetItem item = new WidgetItem(widgetInfo, getPackageManager(), mIdp);

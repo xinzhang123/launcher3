@@ -261,6 +261,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         mPreviewItemManager.createFirstItemAnimation(false /* reverse */, null)
                 .start();
 
+        //oh21 dragview folder 合并文件夹时将dragview松开后动画到指定位置
         // This will animate the dragView (srcView) into the new folder
         onDrop(srcInfo, srcView, dstRect, scaleRelativeToDragLayer, 1,
                 false /* itemReturnedOnFailedDrop */);
@@ -456,6 +457,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
         if (!mBackgroundIsVisible) return;
 
+        //oh21 draw文件夹每个icon的入口方法
         mPreviewItemManager.recomputePreviewDrawingParams();
 
         if (!mBackground.drawingDelegated()) {
@@ -513,6 +515,10 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
     public boolean getTextVisible() {
         return mFolderName.getVisibility() == VISIBLE;
+    }
+
+    public BubbleTextView getFolderName() {
+        return mFolderName;
     }
 
     /**

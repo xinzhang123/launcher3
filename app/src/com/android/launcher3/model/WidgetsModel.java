@@ -163,7 +163,7 @@ public class WidgetsModel {
                 // Ensure that all widgets we show can be added on a workspace of this size
                 int minSpanX = Math.min(item.widgetInfo.spanX, item.widgetInfo.minSpanX);
                 int minSpanY = Math.min(item.widgetInfo.spanY, item.widgetInfo.minSpanY);
-                if (minSpanX > idp.numColumns || minSpanY > idp.numRows) {
+                if (minSpanX > idp.getNumColumns() || minSpanY > idp.getNumRows()) {
                     if (DEBUG) {
                         Log.d(TAG, String.format(
                                 "Widget %s : (%d X %d) can't fit on this device",

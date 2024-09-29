@@ -366,12 +366,13 @@ public class LauncherIcons implements AutoCloseable {
     public  Bitmap drawableToBitmap (Drawable drawable , int width , int height) {
         Bitmap bitmap = null;
 
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
+        //oh21 这里把icon的drawable宽高限制死
+//        if (drawable instanceof BitmapDrawable) {
+//            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+//            if(bitmapDrawable.getBitmap() != null) {
+//                return bitmapDrawable.getBitmap();
+//            }
+//        }
 
         int intrinsicWidth = width;
         int intrinsicHeight = height;

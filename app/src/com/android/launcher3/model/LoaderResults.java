@@ -258,8 +258,8 @@ public class LoaderResults {
      * right) */
     private void sortWorkspaceItemsSpatially(ArrayList<ItemInfo> workspaceItems) {
         final InvariantDeviceProfile profile = mApp.getInvariantDeviceProfile();
-        final int screenCols = profile.numColumns;
-        final int screenCellCount = profile.numColumns * profile.numRows;
+        final int screenCols = profile.getNumColumns();
+        final int screenCellCount = profile.getNumColumns() * profile.getNumRows();
         Collections.sort(workspaceItems, new Comparator<ItemInfo>() {
             @Override
             public int compare(ItemInfo lhs, ItemInfo rhs) {

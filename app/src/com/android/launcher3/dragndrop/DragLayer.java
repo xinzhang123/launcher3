@@ -373,7 +373,7 @@ public class DragLayer extends BaseDragLayer<Launcher> {
             if (dist < maxDist) {
                 duration *= mCubicEaseOutInterpolator.getInterpolation(dist / maxDist);
             }
-            duration = Math.max(duration, res.getInteger(R.integer.config_dropAnimMinDuration));
+            duration = Math.max(duration, res.getInteger(R.integer.config_dropAnimMinDuration));//oh21 dragview释放动画执行时间
         }
 
         // Fall back to cubic ease out interpolator for the animation if none is specified

@@ -61,11 +61,11 @@ public class LauncherAppWidgetProviderInfo extends AppWidgetProviderInfo {
         float smallestCellWidth = DeviceProfile.calculateCellWidth(Math.min(
                 idp.landscapeProfile.widthPx - paddingLand.x,
                 idp.portraitProfile.widthPx - paddingPort.x),
-                idp.numColumns);
+                idp.getNumColumns());
         float smallestCellHeight = DeviceProfile.calculateCellWidth(Math.min(
                 idp.landscapeProfile.heightPx - paddingLand.y,
                 idp.portraitProfile.heightPx - paddingPort.y),
-                idp.numRows);
+                idp.getNumRows());
 
         // We want to account for the extra amount of padding that we are adding to the widget
         // to ensure that it gets the full amount of space that it has requested.

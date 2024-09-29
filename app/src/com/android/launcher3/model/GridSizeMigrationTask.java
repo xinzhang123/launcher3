@@ -895,7 +895,7 @@ public class GridSizeMigrationTask {
         SharedPreferences prefs = Utilities.getPrefs(context);
         InvariantDeviceProfile idp = LauncherAppState.getIDP(context);
 
-        String gridSizeString = getPointString(idp.numColumns, idp.numRows);
+        String gridSizeString = getPointString(idp.getNumColumns(), idp.getNumRows());
 
         if (gridSizeString.equals(prefs.getString(KEY_MIGRATION_SRC_WORKSPACE_SIZE, "")) &&
                 idp.numHotseatIcons == prefs.getInt(KEY_MIGRATION_SRC_HOTSEAT_COUNT, idp.numHotseatIcons)) {
@@ -918,7 +918,7 @@ public class GridSizeMigrationTask {
             }
 
             // Grid size
-            Point targetSize = new Point(idp.numColumns, idp.numRows);
+            Point targetSize = new Point(idp.getNumColumns(), idp.getNumRows());
             Point sourceSize = parsePoint(prefs.getString(
                     KEY_MIGRATION_SRC_WORKSPACE_SIZE, gridSizeString));
 

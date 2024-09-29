@@ -60,7 +60,6 @@ public class WorkspaceStateTransitionAnimation {
 
     public void setStateWithAnimation(LauncherState toState, AnimatorSetBuilder builder,
             AnimationConfig config) {
-        //oh21 去掉拖拽缩放动画
         setWorkspaceProperty(toState, config.getPropertySetter(builder), builder, config);
     }
 
@@ -71,6 +70,7 @@ public class WorkspaceStateTransitionAnimation {
     /**
      * Starts a transition animation for the workspace.
      */
+    //oh21 fixme 看是否要修改长按后的缩放动画
     private void setWorkspaceProperty(LauncherState state, PropertySetter propertySetter,
             AnimatorSetBuilder builder, AnimationConfig config) {
         float[] scaleAndTranslation = state.getWorkspaceScaleAndTranslation(mLauncher);
@@ -97,16 +97,16 @@ public class WorkspaceStateTransitionAnimation {
 //                    hotseatIconsAlpha, fadeInterpolator);
         }
 
-        if (!config.playNonAtomicComponent()) {
-            // Only the alpha and scale, handled above, are included in the atomic animation.
-            return;
-        }
+//        if (!config.playNonAtomicComponent()) {
+//            // Only the alpha and scale, handled above, are included in the atomic animation.
+//            return;
+//        }
 
-        Interpolator translationInterpolator = !playAtomicComponent ? LINEAR : ZOOM_OUT;
-        propertySetter.setFloat(mWorkspace, View.TRANSLATION_X,
-                scaleAndTranslation[1], translationInterpolator);
-        propertySetter.setFloat(mWorkspace, View.TRANSLATION_Y,
-                scaleAndTranslation[2], translationInterpolator);
+//        Interpolator translationInterpolator = !playAtomicComponent ? LINEAR : ZOOM_OUT;
+//        propertySetter.setFloat(mWorkspace, View.TRANSLATION_X,
+//                scaleAndTranslation[1], translationInterpolator);
+//        propertySetter.setFloat(mWorkspace, View.TRANSLATION_Y,
+//                scaleAndTranslation[2], translationInterpolator);
 
 //        propertySetter.setViewAlpha(mLauncher.getHotseatSearchBox(),
 //                (elements & HOTSEAT_SEARCH_BOX) != 0 ? 1 : 0, fadeInterpolator);

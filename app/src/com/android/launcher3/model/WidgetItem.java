@@ -37,8 +37,8 @@ public class WidgetItem extends ComponentKey implements Comparable<WidgetItem> {
         widgetInfo = info;
         activityInfo = null;
 
-        spanX = Math.min(info.spanX, idp.numColumns);
-        spanY = Math.min(info.spanY, idp.numRows);
+        spanX = Math.min(info.spanX, idp.getNumColumns());
+        spanY = Math.min(info.spanY, idp.getNumRows());
     }
 
     public WidgetItem(ShortcutConfigActivityInfo info) {

@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.util.Log;
 
+import com.android.launcher3.FolderInfo;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.Utilities;
@@ -65,6 +66,9 @@ public class DeepShortcutManager {
     }
 
     public static boolean supportsShortcuts(ItemInfo info) {
+        if (info instanceof FolderInfo) {
+            return true;
+        }
         boolean isItemPromise = info instanceof com.android.launcher3.ShortcutInfo
                 && ((com.android.launcher3.ShortcutInfo) info).hasPromiseIconUi();
         return info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
