@@ -188,7 +188,7 @@ public class DragController implements DragDriver.EventListener, TouchController
         Log.d("DragController", "startDrag: mIsInPreDrag === " + mIsInPreDrag);
         final Resources res = mLauncher.getResources();
         final float scaleDps = mIsInPreDrag
-                ? res.getDimensionPixelSize(R.dimen.pre_drag_view_scale) : 0f;
+                ? res.getDimensionPixelSize(R.dimen.pre_drag_view_scale) : 0f; //oh21 fixme 长按放大的dp值
         final DragView dragView = mDragObject.dragView = new DragView(mLauncher, b, registrationX,
                 registrationY, initialDragViewScale, dragViewScaleOnDrop, scaleDps);
         dragView.setItemInfo(dragInfo);

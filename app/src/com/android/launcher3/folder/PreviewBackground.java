@@ -89,7 +89,7 @@ public class PreviewBackground {
     public boolean isClipping = true;
 
     // Drawing / animation configurations
-    private static final float ACCEPT_SCALE_FACTOR = 1.20f;
+    private static final float ACCEPT_SCALE_FACTOR = 1.20f; //oh21 fixme folder 合并文件夹时放大的倍数
     private static final float ACCEPT_COLOR_MULTIPLIER = 1.5f;
 
     // Expressed on a scale from 0 to 255.

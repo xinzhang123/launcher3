@@ -31,13 +31,13 @@ import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 /**
  * Definition for spring loaded state used during drag and drop.
  */
-public class SpringLoadedState extends LauncherState {
+public class FolderOpenState extends LauncherState {
 
     private static final int STATE_FLAGS = FLAG_MULTI_PAGE |
             FLAG_DISABLE_ACCESSIBILITY | FLAG_DISABLE_RESTORE | FLAG_WORKSPACE_ICONS_CAN_BE_DRAGGED |
             FLAG_DISABLE_PAGE_CLIPPING | FLAG_PAGE_BACKGROUNDS | FLAG_HIDE_BACK_BUTTON;
 
-    public SpringLoadedState(int id) {
+    public FolderOpenState(int id) {
         super(id, ContainerType.OVERVIEW, SPRING_LOADED_TRANSITION_MS, STATE_FLAGS);
     }
 
@@ -49,29 +49,8 @@ public class SpringLoadedState extends LauncherState {
             return super.getWorkspaceScaleAndTranslation(launcher);
         }
 
-        if (grid.isVerticalBarLayout()) {
-            float scale = grid.workspaceSpringLoadShrinkFactor;
-            return new float[] {scale, 1, 0};
-        }
-
-        Log.d("123", "getWorkspaceScaleAndTranslation: grid.workspaceSpringLoadShrinkFactor === " + grid.workspaceSpringLoadShrinkFactor);
         float scale = grid.workspaceSpringLoadShrinkFactor;
-        Rect insets = launcher.getDragLayer().getInsets();
-
-        float scaledHeight = scale * ws.getNormalChildHeight();
-        float shrunkTop = insets.top + grid.dropTargetBarSizePx;
-        float shrunkBottom = ws.getMeasuredHeight() - insets.bottom
-                - grid.workspacePadding.bottom
-                - grid.workspaceSpringLoadedBottomSpace;
-        float totalShrunkSpace = shrunkBottom - shrunkTop;
-
-        float desiredCellTop = shrunkTop + (totalShrunkSpace - scaledHeight) / 2;
-
-        float halfHeight = ws.getHeight() / 2;
-        float myCenter = ws.getTop() + halfHeight;
-        float cellTopFromCenter = halfHeight - ws.getChildAt(0).getTop();
-        float actualCellTop = myCenter - cellTopFromCenter * scale;
-        return new float[] { scale, 1, (desiredCellTop - actualCellTop) / scale};
+        return new float[] {scale, 0, 0};
     }
 
     @Override

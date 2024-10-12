@@ -22,6 +22,7 @@ import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
 import static com.android.launcher3.Launcher.REQUEST_BIND_PENDING_APPWIDGET;
 import static com.android.launcher3.Launcher.REQUEST_RECONFIGURE_APPWIDGET;
+import static com.android.launcher3.LauncherState.OPEN_FOLDER;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -75,6 +76,7 @@ public class ItemClickHandler {
             onClickAppShortcut(v, (ShortcutInfo) tag, launcher);
         } else if (tag instanceof FolderInfo) {
             if (v instanceof FolderIcon) {
+                launcher.getStateManager().goToState(OPEN_FOLDER, 0);
                 onClickFolderIcon(v);
             }
         } else if (tag instanceof AppInfo) {

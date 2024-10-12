@@ -36,7 +36,7 @@ public class LauncherAnimUtils {
      */
     public static final int ALL_APPS_TRANSITION_MS = 320;
     public static final int OVERVIEW_TRANSITION_MS = 250;
-    public static final int SPRING_LOADED_TRANSITION_MS = 150;//oh21 dragview 目前试图缩放时间为150ms
+    public static final int SPRING_LOADED_TRANSITION_MS = 200;//oh21 dragview 目前试图缩放时间为200ms
     public static final int SPRING_LOADED_EXIT_DELAY = 500;
 
     // The progress of an animation to all apps must be at least this far along to snap to all apps.
@@ -165,6 +165,19 @@ public class LauncherAnimUtils {
                 public void set(View view, Float scale) {
                     view.setScaleX(scale);
                     view.setScaleY(scale);
+                }
+            };
+
+    public static final Property<View, Float> ALPHA_PROPERTY =
+            new Property<View, Float>(Float.class, "alpha") {
+                @Override
+                public Float get(View view) {
+                    return view.getAlpha();
+                }
+
+                @Override
+                public void set(View view, Float value) {
+                    view.setAlpha(value);
                 }
             };
 

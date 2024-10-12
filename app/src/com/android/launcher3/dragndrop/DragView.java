@@ -468,16 +468,18 @@ public class DragView extends View {
                 canvas.restoreToCount(saveCount);
             }
         }
+//        canvas.drawText("测试", getMeasuredWidth() / 2, getMeasuredHeight(), mPaint);
 
-        if (mScaledMaskPath != null) {
-            int cnt = canvas.save();
-            canvas.clipPath(mScaledMaskPath);
-            mBgSpringDrawable.draw(canvas);
-            canvas.translate(mTranslateX.mValue, mTranslateY.mValue);
-            mFgSpringDrawable.draw(canvas);
-            canvas.restoreToCount(cnt);
-            mBadge.draw(canvas);
-        }
+        //oh21 dragview 去掉了图标缩放效果
+//        if (mScaledMaskPath != null) {
+//            int cnt = canvas.save();
+//            canvas.clipPath(mScaledMaskPath);
+//            mBgSpringDrawable.draw(canvas);
+//            canvas.translate(mTranslateX.mValue, mTranslateY.mValue);
+//            mFgSpringDrawable.draw(canvas);
+//            canvas.restoreToCount(cnt);
+//            mBadge.draw(canvas);
+//        }
     }
 
     public void setCrossFadeBitmap(Bitmap crossFadeBitmap) {

@@ -412,7 +412,11 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
 
         // Always enter the spring loaded mode
-        mLauncher.getStateManager().goToState(SPRING_LOADED);
+        //oh21 folder 这里如果文件夹存在则不进入SPRING_LOADED模式
+        Folder folder = Folder.getOpen(mLauncher);
+        if (folder == null) {
+            mLauncher.getStateManager().goToState(SPRING_LOADED);
+        }
     }
 
     public void deferRemoveExtraEmptyScreen() {
@@ -576,7 +580,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         // created CellLayout.
         CellLayout newScreen = (CellLayout) LayoutInflater.from(getContext()).inflate(
                         R.layout.workspace_screen, this, false /* attachToRoot */);
-        //oh21 add cellLayout布局的时候设置的padding
+        //oh21 fixme add cellLayout布局的时候设置的padding
         int paddingLeftRight = mLauncher.getDeviceProfile().cellLayoutPaddingLeftRightPx;
         int paddingBottom = mLauncher.getDeviceProfile().cellLayoutBottomPaddingPx;
         newScreen.setPadding(paddingLeftRight, paddingBottom, paddingLeftRight, paddingBottom);
@@ -2370,8 +2374,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
             float targetCellDistance = mDragTargetLayout.getDistanceFromCell(
                     mDragViewVisualCenter[0], mDragViewVisualCenter[1], mTargetCell);
-            Log.d(TAG, "onDragOver: mDragViewVisualCenter x == " + mDragViewVisualCenter[0] + " mDragViewVisualCenter y === " + mDragViewVisualCenter[1]);
-            Log.d(TAG, "onDragOver: mTargetCell x === " + mTargetCell[0] + " y === " + mTargetCell[1] + " targetCellDistance === " + targetCellDistance);
+            Log.d(TAG, "onDragOver: mTargetCell x === " + mTargetCell[0] + " y === " + mTargetCell[1] + " targetCellDistance === " + targetCellDistance + " mMaxDistanceForFolderCreation === " + mMaxDistanceForFolderCreation);
 
             manageFolderFeedback(mDragTargetLayout, mTargetCell, targetCellDistance, d);
 

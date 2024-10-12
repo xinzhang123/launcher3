@@ -128,6 +128,11 @@ public class ClippedFolderIconLayoutRule {
 
     }
 
+    //oh21 fixme 这里修改FolderIcon样式
+    private void getPosition2(int index, int curNumItems, float[] result) {
+
+    }
+
     public float scaleForItem(int numItems) {
         // Scale is determined by the number of items in the preview.
         final float scale;

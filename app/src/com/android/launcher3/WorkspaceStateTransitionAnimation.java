@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.LauncherAnimUtils.ALPHA_PROPERTY;
 import static com.android.launcher3.LauncherAnimUtils.DRAWABLE_ALPHA;
 import static com.android.launcher3.LauncherAnimUtils.SCALE_PROPERTY;
 import static com.android.launcher3.LauncherState.HOTSEAT_ICONS;
@@ -47,6 +48,7 @@ public class WorkspaceStateTransitionAnimation {
     private final Workspace mWorkspace;
 
     private float mNewScale;
+    private float mNewAlpha;
 
     public WorkspaceStateTransitionAnimation(Launcher launcher, Workspace workspace) {
         mLauncher = launcher;
@@ -76,6 +78,7 @@ public class WorkspaceStateTransitionAnimation {
         float[] scaleAndTranslation = state.getWorkspaceScaleAndTranslation(mLauncher);
         Log.d("LauncherState", "setWorkspaceProperty: " + scaleAndTranslation);
         mNewScale = scaleAndTranslation[0];
+        mNewAlpha = scaleAndTranslation[1];
 //        PageAlphaProvider pageAlphaProvider = state.getWorkspacePageAlphaProvider(mLauncher);
 //        final int childCount = mWorkspace.getChildCount();
 //        for (int i = 0; i < childCount; i++) {
@@ -90,6 +93,7 @@ public class WorkspaceStateTransitionAnimation {
         if (playAtomicComponent) {
             Interpolator scaleInterpolator = builder.getInterpolator(ANIM_WORKSPACE_SCALE, ZOOM_OUT);
             propertySetter.setFloat(mWorkspace, SCALE_PROPERTY, mNewScale, scaleInterpolator);
+            propertySetter.setFloat(mWorkspace, ALPHA_PROPERTY, mNewAlpha, scaleInterpolator);//oh21 folder 这里新增了打开文件夹时背景动画
 //            float hotseatIconsAlpha = (elements & HOTSEAT_ICONS) != 0 ? 1 : 0;
 //            propertySetter.setViewAlpha(mLauncher.getHotseat().getLayout(), hotseatIconsAlpha,
 //                    fadeInterpolator);

@@ -125,8 +125,8 @@ public class FolderAnimationManager {
         // Match size/scale of icons in the preview
         float previewScale = rule.scaleForItem(itemsInPreview.size());
         float previewSize = rule.getIconSize() * previewScale;
-        float initialScale = previewSize / itemsInPreview.get(0).getIconSize()
-                * scaleRelativeToDragLayer;
+        float initialScale = !itemsInPreview.isEmpty() ? previewSize / itemsInPreview.get(0).getIconSize() //oh21 fixme 这里需要处理folder中只有一个iteminfo的情况
+                * scaleRelativeToDragLayer : 1;
         final float finalScale = 1f;
         float scale = mIsOpening ? initialScale : finalScale;
         mFolder.setScaleX(scale);

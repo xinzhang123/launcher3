@@ -153,11 +153,12 @@ public class PreviewItemManager {
         canvas.translate(bg.basePreviewOffsetX, bg.basePreviewOffsetY);
 
         float firstPageItemsTransX = 0;
-        if (mShouldSlideInFirstPage) {
-            drawParams(canvas, mCurrentPageParams, mCurrentPageItemsTransX);
-
-            firstPageItemsTransX = -ITEM_SLIDE_IN_OUT_DISTANCE_PX + mCurrentPageItemsTransX;
-        }
+        //oh21 fixme 这里的逻辑忘了
+//        if (mShouldSlideInFirstPage) {
+//            drawParams(canvas, mCurrentPageParams, mCurrentPageItemsTransX);
+//
+//            firstPageItemsTransX = -ITEM_SLIDE_IN_OUT_DISTANCE_PX + mCurrentPageItemsTransX;
+//        }
 
         drawParams(canvas, mFirstPageParams, firstPageItemsTransX);
         canvas.translate(-bg.basePreviewOffsetX, -bg.basePreviewOffsetY);

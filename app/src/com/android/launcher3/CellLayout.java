@@ -718,7 +718,7 @@ public class CellLayout extends ViewGroup {
     void regionToCenterPoint(int cellX, int cellY, int spanX, int spanY, int[] result) {
         final int hStartPadding = getPaddingLeft();
         final int vStartPadding = getPaddingTop();
-        result[0] = hStartPadding + cellX * mCellWidth + (spanX * mCellWidth) / 2;
+        result[0] = hStartPadding + cellX * mCellWidth + (spanX * mCellWidth) / 2; //oh21 fixme 这里需要处理中心点坐标，目前有偏差
         result[1] = vStartPadding + cellY * mCellHeight + (spanY * mCellHeight) / 2;
     }
 
@@ -740,6 +740,7 @@ public class CellLayout extends ViewGroup {
     //oh21 dragview获取中心点距离需要放置的cell单元格的中心点直线距离，使用了3角函数
     public float getDistanceFromCell(float x, float y, int[] cell) {
         cellToCenterPoint(cell[0], cell[1], mTmpPoint);
+        Log.d(TAG, "cellLayout: getDistanceFromCell [" + x + "," + y + "]" + Arrays.toString(mTmpPoint));
         return (float) Math.hypot(x - mTmpPoint[0], y - mTmpPoint[1]);
     }
 

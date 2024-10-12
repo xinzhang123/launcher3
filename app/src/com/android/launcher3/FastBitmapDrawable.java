@@ -234,6 +234,7 @@ public class FastBitmapDrawable extends Drawable {
                 mScaleAnimation.setInterpolator(LINEAR);
                 mScaleAnimation.start();
             } else {
+                Log.d(TAG, "onStateChange: mScale = 1");
                 mScale = 1f;
                 invalidateSelf();
             }

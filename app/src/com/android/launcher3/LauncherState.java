@@ -26,6 +26,7 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.animation.Interpolator;
 
+import com.android.launcher3.states.FolderOpenState;
 import com.android.launcher3.states.SpringLoadedState;
 import com.android.launcher3.uioverrides.AllAppsState;
 import com.android.launcher3.uioverrides.FastOverviewState;
@@ -73,7 +74,7 @@ public class LauncherState {
                 }
             };
 
-    private static final LauncherState[] sAllStates = new LauncherState[5];
+    private static final LauncherState[] sAllStates = new LauncherState[6];
 
     /**
      * TODO: Create a separate class for NORMAL state.
@@ -89,6 +90,7 @@ public class LauncherState {
     public static final LauncherState OVERVIEW = new OverviewState(2);
     public static final LauncherState FAST_OVERVIEW = new FastOverviewState(3);
     public static final LauncherState ALL_APPS = new AllAppsState(4);
+    public static final LauncherState OPEN_FOLDER = new FolderOpenState(5);
 
     protected static final Rect sTempRect = new Rect();
 
@@ -179,7 +181,7 @@ public class LauncherState {
     }
 
     public float[] getWorkspaceScaleAndTranslation(Launcher launcher) {
-        return new float[] {1, 0, 0};
+        return new float[] {1, 1, 0};
     }
 
     /**

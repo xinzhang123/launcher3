@@ -960,6 +960,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
         mPendingActivityResult = savedState.getParcelable(RUNTIME_STATE_PENDING_ACTIVITY_RESULT);
 
+        //oh21 fixme 这里横竖屏切换时对UI做了处理
         SparseArray<Parcelable> widgetsState =
                 savedState.getSparseParcelableArray(RUNTIME_STATE_WIDGET_PANEL);
         if (widgetsState != null) {

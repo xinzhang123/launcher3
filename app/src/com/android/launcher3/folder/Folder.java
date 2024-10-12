@@ -18,6 +18,8 @@ package com.android.launcher3.folder;
 
 import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
 import static com.android.launcher3.LauncherState.NORMAL;
+import static com.android.launcher3.LauncherState.OPEN_FOLDER;
+import static com.android.launcher3.LauncherState.SPRING_LOADED;
 import static com.android.launcher3.compat.AccessibilityManagerCompat.sendCustomAccessibilityEvent;
 
 import android.animation.Animator;
@@ -607,7 +609,7 @@ public class Folder extends AbstractFloatingView implements DragSource,
             closeComplete(false);
             post(this::announceAccessibilityChanges);
         }
-
+        mLauncher.getStateManager().goToState(mDragController.isDragging() ? SPRING_LOADED : NORMAL, 0);
         // Notify the accessibility manager that this folder "window" has disappeared and no
         // longer occludes the workspace items
         mLauncher.getDragLayer().sendAccessibilityEvent(
@@ -776,8 +778,13 @@ public class Folder extends AbstractFloatingView implements DragSource,
 
     public void completeDragExit() {
         if (mIsOpen) {
-            close(true);
-            mRearrangeOnClose = true;
+            if (getItemCount() == 0) {
+                close(false);
+                removeFolderWithFinalItem(); //oh21 fixme bug 这里需要解决文件夹最后一个元素拖拽出来后插入数据库失败问题
+            } else {
+                close(true);
+                mRearrangeOnClose = true;
+            }
         } else if (mState == STATE_ANIMATING) {
             mRearrangeOnClose = true;
         } else {
@@ -1040,11 +1047,12 @@ public class Folder extends AbstractFloatingView implements DragSource,
     }
 
     @Thunk void replaceFolderWithFinalItem() {
-        //oh21 dragview folder 去掉文件夹中只有一个item的情况
+        //oh21 folder 去掉文件夹中只有一个item的情况
         // Add the last remaining child to the workspace in place of the folder
 //        Runnable onCompleteRunnable = new Runnable() {
 //            @Override
 //            public void run() {
+//                Log.d(TAG, "replaceFolderWithFinalItem onCompleteRunnable run: ");
 //                int itemCount = mInfo.contents.size();
 //                if (itemCount <= 1) {
 //                    View newIcon = null;
@@ -1085,6 +1093,31 @@ public class Folder extends AbstractFloatingView implements DragSource,
 //            onCompleteRunnable.run();
 //        }
 //        mDestroyed = true;
+    }
+
+    @Thunk void removeFolderWithFinalItem() {
+        // Add the last remaining child to the workspace in place of the folder
+        Runnable onCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "removeFolderWithFinalItem onCompleteRunnable run: ");
+                int itemCount = mInfo.contents.size();
+                if (itemCount <= 1) {
+                    // Remove the folder
+                    mLauncher.removeItem(mFolderIcon, mInfo, true /* deleteFromDb */);
+                    if (mFolderIcon instanceof DropTarget) {
+                        mDragController.removeDropTarget((DropTarget) mFolderIcon);
+                    }
+                }
+            }
+        };
+        View finalChild = mContent.getLastItem();
+        if (finalChild != null) {
+            mFolderIcon.performDestroyAnimation(onCompleteRunnable);
+        } else {
+            onCompleteRunnable.run();
+        }
+        mDestroyed = true;
     }
 
     public boolean isDestroyed() {
@@ -1216,7 +1249,7 @@ public class Folder extends AbstractFloatingView implements DragSource,
             mInfo.setOption(FolderInfo.FLAG_MULTI_PAGE_ANIMATION, true, mLauncher.getModelWriter());
         }
 
-        mLauncher.getStateManager().goToState(NORMAL, 0); //oh21 workspace修改从workspace拖拽view到folder中延迟执行的normal动画
+//        mLauncher.getStateManager().goToState(NORMAL, 0); //oh21 workspace修改从workspace拖拽view到folder中延迟执行的normal动画
         if (d.stateAnnouncer != null) {
             d.stateAnnouncer.completeAction(R.string.item_moved);
         }
